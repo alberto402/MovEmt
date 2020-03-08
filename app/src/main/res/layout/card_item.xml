@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardBackgroundColor="@color/colorCardBackground"
-    android:layout_margin="10dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="5dp">
+    app:cardElevation="5dp"
+    android:id="@+id/cvItem">
 
     <FrameLayout
         android:layout_width="4dp"
@@ -14,6 +15,7 @@
         android:background="@color/colorPrimary"/>
 
     <LinearLayout
+        android:id="@+id/llItemOption"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -21,15 +23,17 @@
         android:padding="5dp">
 
         <TextView
+            android:id="@+id/tvOption"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:textAlignment="textStart"
-            android:textSize="40sp"
-            android:textColor="@color/colorPrimary"/>
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:layout_marginStart="10dp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/cardIcon"
+            android:id="@+id/ivOption"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>

@@ -13,7 +13,7 @@
         app:cardBackgroundColor="@color/colorCardBackground"
         android:layout_margin="10dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="5dp">
+        app:cardElevation="2dp">
 
         <FrameLayout
             android:layout_width="4dp"
@@ -36,6 +36,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="5"/>
+        android:weightSum="5"
+        android:layout_marginVertical="40dp">
+
+        <include layout="@layout/card_item"
+            android:id="@+id/cvStop"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"/>
+
+        <include layout="@layout/card_item"
+            android:id="@+id/cvPath"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"/>
+
+        <include layout="@layout/card_item"
+            android:id="@+id/cvBus"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"/>
+
+        <include layout="@layout/card_item"
+            android:id="@+id/cvVoice"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"/>
+
+        <include layout="@layout/card_item"
+            android:id="@+id/cvFavStops"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="20dp"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
