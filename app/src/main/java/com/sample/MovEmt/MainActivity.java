@@ -42,6 +42,37 @@ public class MainActivity extends AppCompatActivity {
 
         ((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
         ((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
+
+        cvStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickEnterStop(v);
+            }
+        });
+        cvPath.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickSelectPath(v);
+            }
+        });
+        cvBus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickFindBus(v);
+            }
+        });
+        cvVoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickVoiceCommand(v);
+            }
+        });
+        cvFavStops.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickFavStops(v);
+            }
+        });
     }
 
     void onClickEnterStop(View v){
