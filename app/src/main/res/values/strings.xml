@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MovEmt</string>
+    <string name="appName">MOVEMT</string>
+    <string name="stop">Introduce parada</string>
+    <string name="path">Selecciona ruta</string>
+    <string name="busses">Localiza autobuses</string>
+    <string name="voice">Comando por voz</string>
+    <string name="favStops">Paradas favoritas</string>
 </resources>
