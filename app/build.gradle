@@ -22,17 +22,7 @@ android {
         targetCompatibility = 1.8
     }
 }
-allprojects {
-    repositories {
-        google()
-        jcenter()
 
-        mavenCentral()
-        maven {
-            url 'https://csspeechstorage.blob.core.windows.net/maven/'
-        }
-    }
-}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'

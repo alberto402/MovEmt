@@ -1,103 +1,66 @@
 package com.sample.MovEmt;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.microsoft.cognitiveservices.speech.ResultReason;
-import com.microsoft.cognitiveservices.speech.SpeechConfig;
-import com.microsoft.cognitiveservices.speech.SpeechRecognitionResult;
-import com.microsoft.cognitiveservices.speech.SpeechRecognizer;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+
+import static android.Manifest.permission.*;
+
 public class MainActivity extends AppCompatActivity {
-    private CardView cvStop;
-    private CardView cvPath;
-    private CardView cvBus;
-    private CardView cvVoice;
-    private CardView cvFavStops;
+
     // Replace below with your own subscription key
-    private static String speechSubscriptionKey = "YourSubscriptionKey";
+    private static String speechSubscriptionKey = "2af90a0d7abb455aab34142d9e1d00ba";
     // Replace below with your own service region (e.g., "westus").
-    private static String serviceRegion = "YourServiceRegion";
+    private static String serviceRegion = "outhcentralus";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cvStop = findViewById(R.id.cvStop);
-        cvPath = findViewById(R.id.cvPath);
-        cvBus = findViewById(R.id.cvBus);
-        cvVoice = findViewById(R.id.cvVoice);
-        cvFavStops = findViewById(R.id.cvFavStops);
 
-        // set text and icons
-        ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.stop);
-        ((ImageView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_count);
 
-        ((TextView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.path);
-        ((ImageView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_room_black_24dp);
-
-        ((TextView)cvBus.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.busses);
-        ((ImageView)cvBus.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_directions_bus_black_24dp);
-
-        ((TextView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.voice);
-        ((ImageView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_settings_voice_black_24dp);
-
-        ((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
-        ((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
-
-        cvStop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickEnterStop(v);
-            }
-        });
-        cvPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickSelectPath(v);
-            }
-        });
-        cvBus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickFindBus(v);
-            }
-        });
-        cvVoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickVoiceCommand(v);
-            }
-        });
-        cvFavStops.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickFavStops(v);
-            }
-        });
+        // Note: we need to request the permissions
+       int requestCode = 5; // unique code for the permission request
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{RECORD_AUDIO, INTERNET}, requestCode);
     }
 
-    void onClickEnterStop(View v){
-        // TODO
-    }
+    public void onSpeechButtonClicked(View v) {
+        TextView txt = (TextView) this.findViewById(R.id.hello); // 'hello' is the ID of your text view
 
-    void onClickSelectPath(View v){
-        // TODO
-    }
+        Intent intent = new Intent(v.getContext(), googleSpeech.class);
+        startActivityForResult(intent, 0);/*
+        try {
+            SpeechConfig config = SpeechConfig.fromSubscription(speechSubscriptionKey, serviceRegion);
+            assert(config != null);
 
-    void onClickFindBus(View v){
-        // TODO
-    }
+            SpeechRecognizer reco = new SpeechRecognizer(config);
+            assert(reco != null);
 
-    void onClickVoiceCommand(View v){
-        // TODO
-    }
 
-    void onClickFavStops(View v){
-        // TODO
+            Future<SpeechRecognitionResult> task = reco.recognizeOnceAsync();
+            assert(task != null);
+
+            // Note: this will block the UI thread, so eventually, you want to
+            //        register for the event (see full samples)
+            SpeechRecognitionResult result = task.get();
+            assert(result != null);
+
+            if (result.getReason() == ResultReason.RecognizedSpeech) {
+                txt.setText(result.toString());
+            }
+            else {
+                txt.setText("Error recognizing. Did you update the subscription info?" + System.lineSeparator() + result.toString());
+            }
+
+            reco.close();
+        } catch (Exception ex) {
+            Log.e("SpeechSDKDemo", "unexpected " + ex.getMessage());
+            assert(false);
+        }*/
     }
 }

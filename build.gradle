@@ -18,7 +18,11 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+
+        mavenCentral()
+        maven {
+            url 'https://csspeechstorage.blob.core.windows.net/maven/'
+        }
     }
 }
 
