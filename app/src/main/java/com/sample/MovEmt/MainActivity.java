@@ -1,26 +1,32 @@
 package com.sample.MovEmt;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.microsoft.cognitiveservices.speech.ResultReason;
+import com.microsoft.cognitiveservices.speech.SpeechConfig;
+import com.microsoft.cognitiveservices.speech.SpeechRecognitionResult;
+import com.microsoft.cognitiveservices.speech.SpeechRecognizer;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 public class MainActivity extends AppCompatActivity {
     private CardView cvStop;
     private CardView cvPath;
     private CardView cvBus;
     private CardView cvVoice;
     private CardView cvFavStops;
+    // Replace below with your own subscription key
+    private static String speechSubscriptionKey = "YourSubscriptionKey";
+    // Replace below with your own service region (e.g., "westus").
+    private static String serviceRegion = "YourServiceRegion";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         cvStop = findViewById(R.id.cvStop);
         cvPath = findViewById(R.id.cvPath);
         cvBus = findViewById(R.id.cvBus);
