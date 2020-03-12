@@ -3,6 +3,7 @@ package com.sample.MovEmt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -88,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickVoiceCommand(View v){
-        // TODO
+        Intent intent = new Intent (v.getContext(), SpeechViewActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     void onClickFavStops(View v){
