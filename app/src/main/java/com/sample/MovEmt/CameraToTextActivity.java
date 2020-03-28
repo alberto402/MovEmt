@@ -4,13 +4,9 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.os.Environment;
-import android.speech.RecognizerIntent;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -79,25 +75,6 @@ public class CameraToTextActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onClickBackMain(v);
-            }
-        });
-
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("es-ES"));
-
-                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
-                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "The Language is not supported!");
-                    } else {
-                        Log.i("TTS", "Language Supported.");
-                    }
-                    Log.i("TTS", "Initialization success.");
-                } else {
-                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
-                }
             }
         });
 
