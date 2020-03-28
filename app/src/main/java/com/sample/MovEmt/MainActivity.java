@@ -3,6 +3,7 @@ package com.sample.MovEmt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickEnterStop(View v){
-        // TODO
+        Intent goEnterStop = new Intent(this, parada_texto_imagen.class);
+        startActivity(goEnterStop);
     }
 
     void onClickSelectPath(View v){
