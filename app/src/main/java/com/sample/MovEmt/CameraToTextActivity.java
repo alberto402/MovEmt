@@ -33,9 +33,6 @@ import java.text.SimpleDateFormat;
 public class CameraToTextActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private String currentPhotoPath = "";
-    private TextView textOutput;
-    private TextToSpeech textToSpeech;
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -60,7 +57,6 @@ public class CameraToTextActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
         }
-        textOutput= (TextView) findViewById(R.id.textOutput);
 
         Button btn_foto = (Button) findViewById(R.id.buttonTomarFoto);
         btn_foto.setOnClickListener(new View.OnClickListener() {
