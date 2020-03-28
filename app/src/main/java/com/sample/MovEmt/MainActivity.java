@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickEnterStop(View v){
-        Intent goEnterStop = new Intent(this, parada_texto_imagen.class);
-        startActivity(goEnterStop);
+        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     void onClickSelectPath(View v){

@@ -7,7 +7,7 @@
     <string name="voice">Comando por voz</string>
     <string name="favStops">Paradas favoritas</string>
     <string name="title_activity_speech_view">SpeechViewActivity</string>
-    <string name="title_activity_camera_to_text">Camera_to_text</string>
+    <string name="title_activity_camera_to_text">CameraToTextActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
