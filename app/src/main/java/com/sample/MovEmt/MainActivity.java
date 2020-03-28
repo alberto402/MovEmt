@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickEnterStop(View v){
-        // TODO
+        Intent goEnterStop = new Intent(this, parada_texto_imagen.class);
+        startActivity(goEnterStop);
     }
 
     void onClickSelectPath(View v){
