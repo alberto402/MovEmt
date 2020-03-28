@@ -66,9 +66,20 @@ public class CameraToTextActivity extends AppCompatActivity {
             }
         });
 
+        Button btn_back = (Button) findViewById(R.id.floatingActionButton3);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickBackMain(v);
+            }
+        });
+
+    }
+    void onClickBackMain(View v){
+        Intent intent = new Intent (v.getContext(), MainActivity.class);
+        startActivityForResult(intent, 0);
     }
 
-    
     public void getPhoto(View view)
     {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
