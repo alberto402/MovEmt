@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.net.Uri;
+import android.widget.ImageView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -61,6 +63,10 @@ public class CameraToTextActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(OcrResult o){
+            File photo = new File(currentPhotoPath);
+            if (photo.exists()) {
+                photo.delete();
+            }
             if (o != null) {
                 System.out.println();
                 System.out.println("Recognizing printed text from a local image with OCR ...");
@@ -68,25 +74,29 @@ public class CameraToTextActivity extends AppCompatActivity {
                 System.out.printf("Text angle: %1.3f\n", o.textAngle());
                 System.out.println("Orientation: " + o.orientation());
 
-                boolean firstWord = true;
                 // Gets entire region of text block
+                boolean numberFound = false;
                 for (OcrRegion reg : o.regions()) {
                     // Get one line in the text block
                     for (OcrLine line : reg.lines()) {
                         for (OcrWord word : line.words()) {
                             // get bounding box of first word recognized (just to demo)
-                            if (firstWord) {
-                                EditText stopCode = findViewById(R.id.stopCode);
-                                stopCode.setText(word.text());
-                                System.out.println("\nFirst word in first line is \"" + word.text()
-                                        + "\" with  bounding box: " + word.boundingBox());
-                                firstWord = false;
-                                System.out.println();
+                            if ((word.text().length() >= 3 && word.text().length() <= 4)) {
+                                try {
+                                    Integer.parseInt(word.text());
+                                    EditText stopCode = findViewById(R.id.stopCode);
+                                    stopCode.setText(word.text());
+                                    numberFound = true;
+                                }
+                                catch (NumberFormatException e){}
                             }
-                            System.out.print(word.text() + " ");
                         }
-                        System.out.println();
                     }
+                }
+                if (!numberFound) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
+                    EditText stopCode = findViewById(R.id.stopCode);
+                    stopCode.setText(getString(R.string.c_digo_de_parada));
                 }
             }
         }
@@ -127,22 +137,15 @@ public class CameraToTextActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
         }
 
-        Button btn_foto = (Button) findViewById(R.id.buttonTomarFoto);
-        btn_foto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getPhoto(v);
-            }
+        ImageView stopImage = findViewById(R.id.stopImage);
+        stopImage.setOnClickListener((v) -> {
+            getPhoto(v);
         });
 
         FloatingActionButton btn_back = (FloatingActionButton) findViewById(R.id.floatingActionButton3);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickBackMain(v);
-            }
+        btn_back.setOnClickListener((v) -> {
+            onClickBackMain(v);
         });
-
     }
     void onClickBackMain(View v){
         Intent intent = new Intent (v.getContext(), MainActivity.class);
