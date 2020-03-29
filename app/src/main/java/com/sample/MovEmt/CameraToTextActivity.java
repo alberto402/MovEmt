@@ -1,20 +1,14 @@
 package com.sample.MovEmt;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -24,19 +18,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.microsoft.azure.cognitiveservices.vision.computervision.*;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.*;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import rx.Observable;
-import rx.Subscriber;
 
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
