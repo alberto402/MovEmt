@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.File;
 import java.util.Date;
+import java.util.concurrent.Executor;
 import java.text.SimpleDateFormat;
 
 
@@ -36,69 +37,11 @@ public class CameraToTextActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private String currentPhotoPath = "";
 
-    private class RecognizeTextTask extends AsyncTask<ComputerVisionClient, Void, OcrResult> {
+    private class RecognizeTextExecutor implements Executor {
 
         @Override
-        protected OcrResult doInBackground(ComputerVisionClient... clients) {
-            System.out.println("-----------------------------------------------");
-            System.out.println("RECOGNIZE PRINTED TEXT");
-
-            // Replace this string with the path to your own image.
-
-            try {
-                File rawImage = new File(currentPhotoPath);
-                byte[] bytesArray = new byte[(int) rawImage.length()];
-                FileInputStream fis = new FileInputStream(rawImage);
-                fis.read(bytesArray); //read file into bytes[]
-                fis.close();
-                OcrResult ocrResultLocal = clients[0].computerVision().recognizePrintedTextInStream()
-                        .withDetectOrientation(true).withImage(bytesArray).withLanguage(OcrLanguages.ES).execute();
-                return ocrResultLocal;
-            }
-            catch (Exception ex) {
-                ex.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(OcrResult o){
-            File photo = new File(currentPhotoPath);
-            if (photo.exists()) {
-                photo.delete();
-            }
-            if (o != null) {
-                System.out.println();
-                System.out.println("Recognizing printed text from a local image with OCR ...");
-                System.out.println("\nLanguage: " + o.language());
-                System.out.printf("Text angle: %1.3f\n", o.textAngle());
-                System.out.println("Orientation: " + o.orientation());
-
-                // Gets entire region of text block
-                boolean numberFound = false;
-                for (OcrRegion reg : o.regions()) {
-                    // Get one line in the text block
-                    for (OcrLine line : reg.lines()) {
-                        for (OcrWord word : line.words()) {
-                            // get bounding box of first word recognized (just to demo)
-                            if ((word.text().length() >= 3 && word.text().length() <= 4)) {
-                                try {
-                                    Integer.parseInt(word.text());
-                                    EditText stopCode = findViewById(R.id.stopCode);
-                                    stopCode.setText(word.text());
-                                    numberFound = true;
-                                }
-                                catch (NumberFormatException e){}
-                            }
-                        }
-                    }
-                }
-                if (!numberFound) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
-                    EditText stopCode = findViewById(R.id.stopCode);
-                    stopCode.setText(getString(R.string.c_digo_de_parada));
-                }
-            }
+        public void execute(Runnable r) {
+            new Thread(r).start();
         }
     }
 
@@ -126,7 +69,65 @@ public class CameraToTextActivity extends AppCompatActivity {
      * the block of text.
      */
     private void recognizeTextOCRLocal(ComputerVisionClient client) {
-        new RecognizeTextTask().execute(client);
+        new RecognizeTextExecutor().execute(() -> {
+            System.out.println("-----------------------------------------------");
+            System.out.println("RECOGNIZE PRINTED TEXT");
+
+            // Replace this string with the path to your own image.
+
+            try {
+                File rawImage = new File(currentPhotoPath);
+                byte[] bytesArray = new byte[(int) rawImage.length()];
+                FileInputStream fis = new FileInputStream(rawImage);
+                fis.read(bytesArray); //read file into bytes[]
+                fis.close();
+                OcrResult ocrResultLocal = client.computerVision().recognizePrintedTextInStream()
+                        .withDetectOrientation(true).withImage(bytesArray).withLanguage(OcrLanguages.ES).execute();
+
+                runOnUiThread(() -> {
+                    File photo = new File(currentPhotoPath);
+                    if (photo.exists()) {
+                        photo.delete();
+                    }
+                    if (ocrResultLocal != null) {
+                        System.out.println();
+                        System.out.println("Recognizing printed text from a local image with OCR ...");
+                        System.out.println("\nLanguage: " + ocrResultLocal.language());
+                        System.out.printf("Text angle: %1.3f\n", ocrResultLocal.textAngle());
+                        System.out.println("Orientation: " + ocrResultLocal.orientation());
+
+                        // Gets entire region of text block
+                        boolean numberFound = false;
+                        for (OcrRegion reg : ocrResultLocal.regions()) {
+                            // Get one line in the text block
+                            for (OcrLine line : reg.lines()) {
+                                for (OcrWord word : line.words()) {
+                                    // get bounding box of first word recognized (just to demo)
+                                    if ((word.text().length() >= 3 && word.text().length() <= 4)) {
+                                        try {
+                                            Integer.parseInt(word.text());
+                                            EditText stopCode = findViewById(R.id.stopCode);
+                                            stopCode.setText(word.text());
+                                            numberFound = true;
+                                        }
+                                        catch (NumberFormatException e){}
+                                    }
+                                }
+                            }
+                        }
+                        if (!numberFound) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
+                            EditText stopCode = findViewById(R.id.stopCode);
+                            stopCode.setText(getString(R.string.c_digo_de_parada));
+                        }
+                    }
+                });
+
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
     
     @Override
