@@ -6,7 +6,8 @@
     <string name="busses">Localiza autobuses</string>
     <string name="voice">Comando por voz</string>
     <string name="favStops">Paradas favoritas</string>
-    <string name="title_activity_camera_to_text">Camera_to_text</string>
+    <string name="title_activity_speech_view">SpeechViewActivity</string>
+    <string name="title_activity_camera_to_text">CameraToTextActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -21,4 +22,7 @@
     <string name="image">IMAGE</string>
     <string name="introduce_el_c_digo_de_parada_o_toma_una_foto_con_la_c_mara_para_obtener_informaci_n">Introduce el código de parada o toma una foto con la cámara para obtener información</string>
     <string name="tomar_foto">Tomar foto</string>
+    <string name="azure_subscription_key">bf017d6bf0194f4687b648315e9d1cda</string>
+    <string name="azure_endpoint">https://westeurope.api.cognitive.microsoft.com/</string>
+    <string name="recognize_stop_error">No se ha podido reconocer la parada</string>
 </resources>

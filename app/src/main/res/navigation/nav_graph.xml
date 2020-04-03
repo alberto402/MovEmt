@@ -9,7 +9,11 @@
         android:id="@+id/FirstFragment"
         android:name="com.sample.MovEmt.FirstFragment"
         android:label="@string/first_fragment_label"
+<<<<<<< HEAD
         tools:layout="@layout/fragment_first">
+=======
+        tools:layout="@layout/fragment_first" >
+>>>>>>> 38b17d71c332aeb0f31bbd10aaeeffeb3bfee39f
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -19,7 +23,11 @@
         android:id="@+id/SecondFragment"
         android:name="com.sample.MovEmt.SecondFragment"
         android:label="@string/second_fragment_label"
+<<<<<<< HEAD
         tools:layout="@layout/fragment_second">
+=======
+        tools:layout="@layout/fragment_second" >
+>>>>>>> 38b17d71c332aeb0f31bbd10aaeeffeb3bfee39f
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

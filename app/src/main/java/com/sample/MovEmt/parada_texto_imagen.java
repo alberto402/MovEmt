@@ -30,7 +30,7 @@ public class parada_texto_imagen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parada_texto_imagen);
 
-        img = (ImageView)findViewById(R.id.stopimage);
+        img = (ImageView)findViewById(R.id.stopImage);
 
         if (ContextCompat.checkSelfPermission(parada_texto_imagen.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(parada_texto_imagen.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(parada_texto_imagen.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);

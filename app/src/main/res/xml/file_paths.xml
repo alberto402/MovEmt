@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path
-        name="stop_images"
-        path="Android/data/com.sample.MovEmt/images/stops" />
+    <files-path name="stop-images" path="images/" />
 </paths>
