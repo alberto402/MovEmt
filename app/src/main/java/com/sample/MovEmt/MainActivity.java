@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView cvPath;
     private CardView cvBus;
     private CardView cvVoice;
-    private CardView cvFavStops;
+    //private CardView cvFavStops;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         cvPath = findViewById(R.id.cvPath);
         cvBus = findViewById(R.id.cvBus);
         cvVoice = findViewById(R.id.cvVoice);
-        cvFavStops = findViewById(R.id.cvFavStops);
+        //cvFavStops = findViewById(R.id.cvFavStops);
 
         // set text and icons
         ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.stop);
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.voice);
         ((ImageView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_settings_voice_black_24dp);
 
-        ((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
-        ((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
+        //((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
+        //((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
 
         cvStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 onClickVoiceCommand(v);
             }
         });
-        cvFavStops.setOnClickListener(new View.OnClickListener() {
+        /*cvFavStops.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickFavStops(v);
             }
-        });
+        });*/
     }
 
     void onClickEnterStop(View v){
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    void onClickFavStops(View v){
+    /*void onClickFavStops(View v){
         // TODO
-    }
+    }*/
 }
