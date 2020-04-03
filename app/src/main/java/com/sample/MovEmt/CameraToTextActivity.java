@@ -186,13 +186,10 @@ public class CameraToTextActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case REQUEST_CODE: {
-                if (resultCode == RESULT_OK && null != data) {
-                    ComputerVisionClient compVisClient = ComputerVisionManager.authenticate(getString(R.string.azure_subscription_key)).withEndpoint(getString(R.string.azure_endpoint));
-                    recognizeTextOCRLocal(compVisClient);
-                }
+                ComputerVisionClient compVisClient = ComputerVisionManager.authenticate(getString(R.string.azure_subscription_key)).withEndpoint(getString(R.string.azure_endpoint));
+                recognizeTextOCRLocal(compVisClient);
                 break;
             }
-
         }
     }
 
