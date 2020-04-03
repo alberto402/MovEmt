@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickEnterStop(View v){
-        // TODO
+        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     void onClickSelectPath(View v){

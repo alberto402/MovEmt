@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardBackgroundColor="@color/colorCardBackground"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp">
+
+            <FrameLayout
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stop"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/Back"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/deshacer" />
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/recorder"
+            android:layout_width="match_parent"
+            android:layout_height="285dp"
+
+            android:layout_marginStart="43dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="43dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/ic_settings_voice_black_24dp" />
+        <TextView
+            android:id="@+id/textOutput"
+            android:layout_width="match_parent"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="17dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Pulsa el mic´rofono y comenta lo que deseas saber"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="70dp"
+                android:text="- Información de una parada"
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="70dp"
+                android:text="- Calcular una ruta"
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="70dp"
+                android:text="-Parada más cercana"
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginStart="70dp"
+                android:text="- Ubicación de autobuses" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.sample.MovEmt"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -35,6 +35,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.microsoft.cognitiveservices.speech:client-sdk:1.9.0'
+    implementation 'com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision:1.0.3-beta'
+    annotationProcessor 'com.microsoft.azure:azure-annotations:1.10.0'
     // https://mvnrepository.com/artifact/com.microsoft.azure/azure
     //implementation group: 'com.microsoft.azure', name: 'azure', version: '1.31.1'
+
 }
