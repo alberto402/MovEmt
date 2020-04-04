@@ -6,12 +6,15 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -68,7 +71,7 @@ public class CameraToTextActivity extends AppCompatActivity {
      * RECOGNIZE PRINTED TEXT: Displays text found in image with angle and orientation of
      * the block of text.
      */
-    private void recognizeTextOCRLocal(ComputerVisionClient client) {
+    private void recognizeTextOCRLocal(ComputerVisionClient client, AlertDialog dialog, File photo) {
         new RecognizeTextExecutor().execute(() -> {
             System.out.println("-----------------------------------------------");
             System.out.println("RECOGNIZE PRINTED TEXT");
@@ -76,19 +79,15 @@ public class CameraToTextActivity extends AppCompatActivity {
             // Replace this string with the path to your own image.
 
             try {
-                File rawImage = new File(currentPhotoPath);
-                byte[] bytesArray = new byte[(int) rawImage.length()];
-                FileInputStream fis = new FileInputStream(rawImage);
+                byte[] bytesArray = new byte[(int) photo.length()];
+                FileInputStream fis = new FileInputStream(photo);
                 fis.read(bytesArray); //read file into bytes[]
                 fis.close();
                 OcrResult ocrResultLocal = client.computerVision().recognizePrintedTextInStream()
                         .withDetectOrientation(true).withImage(bytesArray).withLanguage(OcrLanguages.ES).execute();
 
                 runOnUiThread(() -> {
-                    File photo = new File(currentPhotoPath);
-                    if (photo.exists()) {
-                        photo.delete();
-                    }
+                    photo.delete();
                     if (ocrResultLocal != null) {
                         System.out.println();
                         System.out.println("Recognizing printed text from a local image with OCR ...");
@@ -109,12 +108,13 @@ public class CameraToTextActivity extends AppCompatActivity {
                                             EditText stopCode = findViewById(R.id.stopCode);
                                             stopCode.setText(word.text());
                                             numberFound = true;
+                                        } catch (NumberFormatException e) {
                                         }
-                                        catch (NumberFormatException e){}
                                     }
                                 }
                             }
                         }
+                        dialog.dismiss();
                         if (!numberFound) {
                             Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
                             EditText stopCode = findViewById(R.id.stopCode);
@@ -178,16 +178,26 @@ public class CameraToTextActivity extends AppCompatActivity {
 
     }
 
-    
+    // Handle the result of capturing the photo
     @Override
-//Handle the results//
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
             case REQUEST_CODE: {
-                ComputerVisionClient compVisClient = ComputerVisionManager.authenticate(getString(R.string.azure_subscription_key)).withEndpoint(getString(R.string.azure_endpoint));
-                recognizeTextOCRLocal(compVisClient);
+                File currentPhoto = new File(currentPhotoPath);
+                if (currentPhoto.length() > 0) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setView(R.layout.loading_view);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+                    ComputerVisionClient compVisClient = ComputerVisionManager.authenticate(getString(R.string.azure_subscription_key)).withEndpoint(getString(R.string.azure_endpoint));
+                    recognizeTextOCRLocal(compVisClient, dialog, currentPhoto);
+                }
+                else if (currentPhoto.exists()) {
+                    currentPhoto.delete();
+                }
                 break;
             }
         }
