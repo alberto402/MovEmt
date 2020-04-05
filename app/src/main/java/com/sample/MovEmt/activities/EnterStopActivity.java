@@ -1,28 +1,25 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activities;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.net.Uri;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.microsoft.azure.cognitiveservices.vision.computervision.*;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.*;
+import com.sample.MovEmt.R;
+import com.sample.MovEmt.fragments.LoadingDialogFragment;
 
 
 import java.io.FileInputStream;
@@ -36,7 +33,7 @@ import java.text.SimpleDateFormat;
 
 
 
-public class CameraToTextActivity extends AppCompatActivity {
+public class EnterStopActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private String currentPhotoPath = "";
 
@@ -52,7 +49,7 @@ public class CameraToTextActivity extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "MovEMT_stop_" + timeStamp;
-        File storageDir = new File(getFilesDir(), "images");;
+        File storageDir = new File(getFilesDir(), "images");
         if (!storageDir.exists()) {
             storageDir.mkdirs();
         }
@@ -71,7 +68,7 @@ public class CameraToTextActivity extends AppCompatActivity {
      * RECOGNIZE PRINTED TEXT: Displays text found in image with angle and orientation of
      * the block of text.
      */
-    private void recognizeTextOCRLocal(ComputerVisionClient client, AlertDialog dialog, File photo) {
+    private void recognizeTextOCRLocal(ComputerVisionClient client, LoadingDialogFragment dialog, File photo) {
         new RecognizeTextExecutor().execute(() -> {
             System.out.println("-----------------------------------------------");
             System.out.println("RECOGNIZE PRINTED TEXT");
@@ -105,7 +102,7 @@ public class CameraToTextActivity extends AppCompatActivity {
                                     if ((word.text().length() >= 3 && word.text().length() <= 4)) {
                                         try {
                                             Integer.parseInt(word.text());
-                                            EditText stopCode = findViewById(R.id.stopCode);
+                                            EditText stopCode = findViewById(R.id.stopCodeText);
                                             stopCode.setText(word.text());
                                             numberFound = true;
                                         } catch (NumberFormatException e) {
@@ -117,8 +114,8 @@ public class CameraToTextActivity extends AppCompatActivity {
                         dialog.dismiss();
                         if (!numberFound) {
                             Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
-                            EditText stopCode = findViewById(R.id.stopCode);
-                            stopCode.setText(getString(R.string.c_digo_de_parada));
+                            EditText stopCode = findViewById(R.id.stopCodeText);
+                            stopCode.setText("");
                         }
                     }
                 });
@@ -133,18 +130,18 @@ public class CameraToTextActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parada_texto_imagen);
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
+        setContentView(R.layout.activity_enter_stop_view);
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1000);
         }
 
-        ImageView stopImage = findViewById(R.id.stopImage);
-        stopImage.setOnClickListener((v) -> {
+        Button stopButton= findViewById(R.id.capturePhotoButton);
+        stopButton.setOnClickListener((v) -> {
             getPhoto(v);
         });
 
-        FloatingActionButton btn_back = (FloatingActionButton) findViewById(R.id.floatingActionButton3);
-        btn_back.setOnClickListener((v) -> {
+        Button btnBack = findViewById(R.id.Back);
+        btnBack.setOnClickListener((v) -> {
             onClickBackMain(v);
         });
     }
@@ -187,13 +184,11 @@ public class CameraToTextActivity extends AppCompatActivity {
             case REQUEST_CODE: {
                 File currentPhoto = new File(currentPhotoPath);
                 if (currentPhoto.length() > 0) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setView(R.layout.loading_view);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
+                    loadingDialog.show(getSupportFragmentManager(), "LoadingDialogFragment");
 
                     ComputerVisionClient compVisClient = ComputerVisionManager.authenticate(getString(R.string.azure_subscription_key)).withEndpoint(getString(R.string.azure_endpoint));
-                    recognizeTextOCRLocal(compVisClient, dialog, currentPhoto);
+                    recognizeTextOCRLocal(compVisClient, loadingDialog, currentPhoto);
                 }
                 else if (currentPhoto.exists()) {
                     currentPhoto.delete();

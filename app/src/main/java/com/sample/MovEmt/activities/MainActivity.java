@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.sample.MovEmt.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickEnterStop(View v){
-        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        Intent intent = new Intent (v.getContext(), EnterStopActivity.class);
         startActivityForResult(intent, 0);
     }
 

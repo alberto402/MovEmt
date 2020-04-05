@@ -17,16 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SpeechViewActivity"
+            android:name=".activities.SpeechViewActivity"
             android:label="@string/title_activity_speech_view"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".CameraToTextActivity"
+            android:name=".activities.EnterStopActivity"
             android:label="@string/title_activity_camera_to_text"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".MainActivity" >
+        <activity android:name=".activities.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

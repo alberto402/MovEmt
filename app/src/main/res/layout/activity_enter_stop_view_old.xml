@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:backgroundTint="@color/colorPrimaryDark"
-    tools:context=".parada_texto_imagen">
+    tools:context=".activities.parada_texto_imagen">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton3"
