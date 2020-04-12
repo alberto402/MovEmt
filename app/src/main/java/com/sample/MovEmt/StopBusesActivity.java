@@ -89,12 +89,16 @@ public class StopBusesActivity extends AppCompatActivity {
             }
 
             String response = new ResponseReader().getResponse(con);
-            Log.d("StopBusesActivity", response);
+            parseBusesFromJson(response);
 
             con.disconnect();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void parseBusesFromJson(String json){
+
     }
 }
