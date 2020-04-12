@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,8 @@ import java.text.SimpleDateFormat;
 public class CameraToTextActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private String currentPhotoPath = "";
+    private Button stopSearch;
+    private EditText stopCode;
 
     private class RecognizeTextExecutor implements Executor {
 
@@ -44,6 +47,7 @@ public class CameraToTextActivity extends AppCompatActivity {
             new Thread(r).start();
         }
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -147,7 +151,33 @@ public class CameraToTextActivity extends AppCompatActivity {
         btn_back.setOnClickListener((v) -> {
             onClickBackMain(v);
         });
+
+        stopCode = findViewById(R.id.stopCode);
+        stopSearch = findViewById(R.id.stopSearch);
+        stopSearch.setOnClickListener(this::onClickSearch);
     }
+
+
+    private void onClickSearch(View v){
+        runOnUiThread(() -> {
+            String text = stopCode.getText().toString();
+            if(text.equals(""))
+                return;
+
+            try {
+                int stopCode = Integer.parseInt(text);
+
+                Intent intent = new Intent(v.getContext(), StopBusesActivity.class);
+                intent.putExtra("stop code", stopCode);
+                startActivityForResult(intent, 0);
+
+            } catch (Exception e){
+                Log.e("parada_texto_imagen", text + " is NAN.");
+            }
+        });
+    }
+
+
     void onClickBackMain(View v){
         Intent intent = new Intent (v.getContext(), MainActivity.class);
         startActivityForResult(intent, 0);
