@@ -15,7 +15,7 @@ public class ResponseReader {
                     new InputStreamReader(connection.getInputStream()));
 
             while ((inputLine = in.readLine()) != null)
-                content.append(inputLine);
+                content.append(inputLine.trim());
 
             in.close();
         } catch (IOException e) {

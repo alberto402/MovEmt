@@ -168,7 +168,7 @@ public class CameraToTextActivity extends AppCompatActivity {
                 int stopCode = Integer.parseInt(text);
 
                 Intent intent = new Intent(v.getContext(), StopBusesActivity.class);
-                intent.putExtra("stop code", stopCode);
+                intent.putExtra("stopNumber", stopCode);
                 startActivityForResult(intent, 0);
 
             } catch (Exception e){
