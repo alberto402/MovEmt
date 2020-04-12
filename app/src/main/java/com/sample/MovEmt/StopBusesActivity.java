@@ -21,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StopBusesActivity extends AppCompatActivity {
     private RecyclerView rvBus;
@@ -36,14 +37,14 @@ public class StopBusesActivity extends AppCompatActivity {
 
         alBus = new ArrayList<>();
         // remove, its just for test
-        alBus.add(new BusItem("82", 2));
+        /*alBus.add(new BusItem("82", 2));
         alBus.add(new BusItem("133", 3));
-        alBus.add(new BusItem("G", 5));
+        alBus.add(new BusItem("G", 5));*/
 
         rvBus = findViewById(R.id.rvBus);
         rvBus.setHasFixedSize(true);
 
-        // TODO request data on background
+        //request data on background
         Thread thread = new Thread(() -> {
             getBuses();
             // update view
@@ -99,6 +100,34 @@ public class StopBusesActivity extends AppCompatActivity {
     }
 
     private void parseBusesFromJson(String json){
+        String []lines = json.split("\"Arrive\":");
+        lines = lines[1].split(", ");
+        ArrayList<String> alLine = new ArrayList<>();
+        ArrayList<Integer> alTime = new ArrayList<>();
+        String aux = "";
 
+        for(String line : lines){
+            if(line.contains("line")){
+                aux = line.split(": ")[1].replace("\"", "");
+                alLine.add(aux);
+            }
+            else if(line.contains("estimateArrive")){
+                aux = line.split(": ")[1];
+                alTime.add(Integer.parseInt(aux));
+            }
+        }
+
+        if(alLine.size() == alTime.size()){
+            for(int i = 0; i < alLine.size(); i++) {
+                String line = alLine.get(i);
+                int time = alTime.get(i);
+
+                if(time < 999999)
+                    alBus.add(new BusItem(line, time / 60));
+            }
+        }
+        else{
+            Log.e("StopBusesActivity", "Something went wrong during json parse");
+        }
     }
 }

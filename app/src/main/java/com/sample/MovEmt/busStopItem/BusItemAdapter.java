@@ -31,7 +31,10 @@ public class BusItemAdapter extends RecyclerView.Adapter<BusViewHolder> {
     public void onBindViewHolder(@NonNull BusViewHolder holder, int position) {
         BusItem bus = albusItems.get(position);
         holder.getBusLine().setText(bus.getBus());
-        holder.getNextIn().setText(bus.getMinutes() + "'");
+        if(bus.getMinutes() == 0)
+            holder.getNextIn().setText("<<");
+        else
+            holder.getNextIn().setText(bus.getMinutes() + "'");
     }
 
     @Override
