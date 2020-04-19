@@ -22,6 +22,11 @@
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
+            android:name=".StopBusesActivity"
+            android:label="StopBusesActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
             android:name=".CameraToTextActivity"
             android:label="@string/title_activity_camera_to_text"
             android:theme="@style/AppTheme.NoActionBar" >

@@ -25,4 +25,6 @@
     <string name="azure_subscription_key">bf017d6bf0194f4687b648315e9d1cda</string>
     <string name="azure_endpoint">https://westeurope.api.cognitive.microsoft.com/</string>
     <string name="recognize_stop_error">No se ha podido reconocer la parada</string>
+    <string name="bus_line">Línea</string>
+    <string name="next_bus">Próximo</string>
 </resources>
