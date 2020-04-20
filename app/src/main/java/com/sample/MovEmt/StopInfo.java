@@ -1,15 +1,20 @@
 package com.sample.MovEmt;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.widget.TextView;
+
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
 import com.sample.MovEmt.stopInfo.LineItem;
+import com.sample.MovEmt.stopInfo.LineItemAdapter;
 import com.sample.MovEmt.stopInfo.StopItem;
 
 import org.json.JSONArray;
@@ -24,21 +29,31 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class StopInfo extends AppCompatActivity {
-    private ArrayList<LineItem> lineas;
+    private StopItem stopI;
     private int stopNumber;
+    private RecyclerView rvLines;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_info);
-        stopNumber=345;
+        stopNumber=173;
+        rvLines = findViewById(R.id.rvLines);
+        rvLines.setHasFixedSize(true);
         //request data on background
         Thread thread = new Thread(() -> {
             getInfo();
             // update view
             runOnUiThread(()->{
-                //rvBus.setLayoutManager(new LinearLayoutManager(this));
-                //rvBus.setAdapter(new BusItemAdapter(alBus));
+                rvLines.setLayoutManager(new LinearLayoutManager(this));
+                TextView idStop = findViewById(R.id.idStop);
+                idStop.setText(stopI.getIdStop());
+                TextView nameStop = findViewById(R.id.nameStop);
+                nameStop.setText(stopI.getNameStop());
+                TextView direction = findViewById(R.id.direction);
+                direction.setText(stopI.getDirection());
+
+                rvLines.setAdapter(new LineItemAdapter(stopI.getLines()));
             });
         });
         thread.start();
@@ -79,8 +94,7 @@ public class StopInfo extends AppCompatActivity {
         JSONArray stops = inf.getJSONArray("stops");
         JSONObject stop = stops.getJSONObject(0);
         ArrayList<LineItem> lines = parseLinesFromJson(stop.getJSONArray("dataLine"));
-        StopItem myStop = new StopItem(stop.getString("stop"),stop.getString("name"),lines,stop.getString("postalAddress") );
-        int a=3;
+        stopI = new StopItem(stop.getString("stop"),stop.getString("name"),lines,stop.getString("postalAddress") );
 
 
     }
