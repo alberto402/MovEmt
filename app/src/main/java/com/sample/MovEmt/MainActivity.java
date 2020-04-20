@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView cvPath;
     //private CardView cvBus;
     private CardView cvVoice;
-    //private CardView cvFavStops;
+    private CardView cvFavStops;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         cvPath = findViewById(R.id.cvPath);
         //cvBus = findViewById(R.id.cvBus);
         cvVoice = findViewById(R.id.cvVoice);
-        //cvFavStops = findViewById(R.id.cvFavStops);
+        cvFavStops = findViewById(R.id.cvFavStops);
 
         // set text and icons
         ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.stop);
@@ -50,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.voice);
         ((ImageView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_settings_voice_black_24dp);
 
-        //((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
-        //((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
+        ((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
+        ((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
 
         cvStop.setOnClickListener(this::onClickEnterStop);
         cvPath.setOnClickListener(this::onClickSelectPath);
         cvVoice.setOnClickListener(this::onClickVoiceCommand);
         //cvBus.setOnClickListener(this::onClickFindBus);
-        //cvFavStops.setOnClickListener(this::onClickFavStops);
+        cvFavStops.setOnClickListener(this::onClickFavStops);
 
         Thread thread = new Thread(this::setAuthentication);
         thread.start();
@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAuthentication(){
         // set EMT email and password
-        Authentication.email = "";
-        Authentication.password = "";
+        Authentication.email = "acfucm2019@gmail.com";
+        Authentication.password = "Acf2019ADR";
         try {
             URL url = new URL(EndPoint.LOGIN);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    /*void onClickFavStops(View v){
-    }*/
+    void onClickFavStops(View v){
+        Intent intent = new Intent (v.getContext(), StopInfo.class);
+        startActivityForResult(intent, 0);
+    }
 }
