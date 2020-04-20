@@ -73,7 +73,7 @@
             android:layout_marginHorizontal="20dp"/>
 
         <include layout="@layout/card_item"
-            android:id="@+id/cvFavStops"
+            android:id="@+id/cvinfPa"
             android:layout_weight="1"
             android:layout_height="0dp"
             android:layout_width="match_parent"

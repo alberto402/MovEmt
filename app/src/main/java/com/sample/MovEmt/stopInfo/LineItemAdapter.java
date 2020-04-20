@@ -32,7 +32,7 @@ public class LineItemAdapter extends RecyclerView.Adapter<LineViewHolder> {
         LineItem line = alLinesItems.get(position);
         holder.getDest().setText(line.getDest());
         holder.getEnd().setText(line.getEnd());
-        holder.getFrequency().setText(line.getFrequency());
+        holder.getFrequency().setText(line.getFrequency()+" min ");
         holder.getNumber().setText(line.getNumber());
         holder.getSour().setText(line.getSour());
         holder.getStart().setText(line.getStart());

@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
@@ -36,8 +37,9 @@ public class StopInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        stopNumber = intent.getIntExtra("stopNumber", 0);
         setContentView(R.layout.activity_stop_info);
-        stopNumber=173;
         rvLines = findViewById(R.id.rvLines);
         rvLines.setHasFixedSize(true);
         //request data on background

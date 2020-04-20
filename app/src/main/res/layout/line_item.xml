@@ -5,40 +5,125 @@
     android:layout_margin="10px"
     android:layout_weight="2"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/sour"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/back"
+            android:text="Linea"
+           />
+        <TextView
+            android:id="@+id/number"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/back"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="" />
 
-    <TextView
-        android:id="@+id/dest"
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
 
-    <TextView
-        android:id="@+id/number"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Origen" />
+        <TextView
+            android:id="@+id/sour"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+    <TextView
 
-    <TextView
-        android:id="@+id/start"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:text="Destino" />
+        <TextView
+            android:id="@+id/dest"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
 
-    <TextView
-        android:id="@+id/end"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Inincio servicio" />
+        <TextView
+            android:id="@+id/start"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
 
-    <TextView
-        android:id="@+id/frequency"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Fin Servicio" />
+        <TextView
+            android:id="@+id/end"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Frecuencia de buses" />
+        <TextView
+            android:id="@+id/frequency"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+
+
+
 </LinearLayout>
