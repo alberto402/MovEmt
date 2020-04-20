@@ -21,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.microsoft.azure.cognitiveservices.vision.computervision.*;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.*;
+import com.sample.MovEmt.stopInfo.StopItem;
 
 
 import java.io.FileInputStream;
@@ -39,7 +40,7 @@ public class CameraToTextActivity extends AppCompatActivity {
     private String currentPhotoPath = "";
     private Button stopSearch;
     private EditText stopCode;
-
+    private boolean info = false;
     private class RecognizeTextExecutor implements Executor {
 
         @Override
@@ -137,6 +138,8 @@ public class CameraToTextActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        info = extras.getBoolean("info",false);
         setContentView(R.layout.activity_parada_texto_imagen);
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
@@ -166,8 +169,14 @@ public class CameraToTextActivity extends AppCompatActivity {
 
             try {
                 int stopCode = Integer.parseInt(text);
-
-                Intent intent = new Intent(v.getContext(), StopBusesActivity.class);
+                Intent intent;
+                if(info)
+                {
+                     intent = new Intent(v.getContext(), StopInfo.class);
+                }
+                else {
+                     intent = new Intent(v.getContext(), StopBusesActivity.class);
+                }
                 intent.putExtra("stopNumber", stopCode);
                 startActivityForResult(intent, 0);
 
@@ -213,6 +222,7 @@ public class CameraToTextActivity extends AppCompatActivity {
 //Handle the results//
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
 
         switch (requestCode) {
             case REQUEST_CODE: {

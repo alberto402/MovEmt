@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView cvPath;
     //private CardView cvBus;
     private CardView cvVoice;
-    private CardView cvFavStops;
+    private CardView cvinfPa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         cvPath = findViewById(R.id.cvPath);
         //cvBus = findViewById(R.id.cvBus);
         cvVoice = findViewById(R.id.cvVoice);
-        cvFavStops = findViewById(R.id.cvFavStops);
+        cvinfPa = findViewById(R.id.cvinfPa);
 
         // set text and icons
         ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.stop);
@@ -50,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.voice);
         ((ImageView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_settings_voice_black_24dp);
 
-        ((TextView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
-        ((ImageView)cvFavStops.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
+        ((TextView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText("Información parada");
+        ((ImageView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_launcher_info);
 
         cvStop.setOnClickListener(this::onClickEnterStop);
         cvPath.setOnClickListener(this::onClickSelectPath);
         cvVoice.setOnClickListener(this::onClickVoiceCommand);
         //cvBus.setOnClickListener(this::onClickFindBus);
-        cvFavStops.setOnClickListener(this::onClickFavStops);
+        cvinfPa.setOnClickListener(this::onClickInfoStop);
 
         Thread thread = new Thread(this::setAuthentication);
         thread.start();
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
     void onClickEnterStop(View v){
         Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        intent.putExtra("info", false);
         startActivityForResult(intent, 0);
     }
 
@@ -108,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    void onClickFavStops(View v){
-        Intent intent = new Intent (v.getContext(), StopInfo.class);
+    void onClickInfoStop(View v){
+        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        intent.putExtra("info", true);
         startActivityForResult(intent, 0);
     }
 }
