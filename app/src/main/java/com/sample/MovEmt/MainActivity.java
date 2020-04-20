@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.voice);
         ((ImageView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_settings_voice_black_24dp);
 
-        ((TextView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.favStops);
-        ((ImageView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_star_black_24dp);
+        ((TextView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText("Información parada");
+        ((ImageView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_launcher_info);
 
         cvStop.setOnClickListener(this::onClickEnterStop);
         cvPath.setOnClickListener(this::onClickSelectPath);
