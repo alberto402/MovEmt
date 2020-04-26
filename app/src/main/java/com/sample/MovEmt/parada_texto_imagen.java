@@ -25,6 +25,7 @@ public class parada_texto_imagen extends AppCompatActivity {
 
     private ImageView img;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
