@@ -41,31 +41,28 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_route);
-    }
 
-    @Nullable
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //mMapView = (MapView)findViewById(R.id.user_list_map);
-        mMapView = (MapView)findViewById(R.id.action_FirstFragment_to_SecondFragment);
-        /*View view  = inflater.inflate(R.layout., container, false);
-        mUserListRecyclerView = view.findViewById(R.id.user_list_recycler_view);
-
-        initUserListRecyclerView();*/
         Bundle mapViewBundle = null;
         if (savedInstanceState != null){
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
 
+        mMapView = (MapView) findViewById(R.id.map);
         mMapView.onCreate(mapViewBundle);
-        mMapView.getMapAsync(this);
 
-        return mMapView;
+        mMapView.getMapAsync(this);
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mMapView.onStart();
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle == null){
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        mMapView.onSaveInstanceState(mapViewBundle);
     }
 
     @Override
@@ -84,9 +81,9 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mMapView.onPause();
+    public void onStart() {
+        super.onStart();
+        mMapView.onStart();
     }
 
     @Override
@@ -95,30 +92,50 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
         mMapView.onStop();
     }
 
+    public void  onMapReady(GoogleMap map){
+        map.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-        if (mapViewBundle == null){
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-        }
-        mMapView.onSaveInstanceState(mapViewBundle);
-    }
-
     public void onLowMemory(){
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-    public void  onMapReady(GoogleMap map){
-        map.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
-    }
+
+    /*
+    @Nullable
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //mMapView = (MapView)findViewById(R.id.user_list_map);
+        mMapView = (MapView)findViewById(R.id.action_FirstFragment_to_SecondFragment);
+        /*View view  = inflater.inflate(R.layout., container, false);
+        mUserListRecyclerView = view.findViewById(R.id.user_list_recycler_view);
+
+        initUserListRecyclerView();*/
+    /*
+        Bundle mapViewBundle = null;
+        if (savedInstanceState != null){
+            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+
+        mMapView.onCreate(mapViewBundle);
+        mMapView.getMapAsync(this);
+
+        return mMapView;
+    }*/
+
+
+
+
 
 
     /*private boolean checkMapServices(){
