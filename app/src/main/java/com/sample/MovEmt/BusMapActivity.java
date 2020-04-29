@@ -30,6 +30,9 @@ public class BusMapActivity extends AppCompatActivity {
 
         // show loading
         switchLoadingState();
+
+        btBack.setOnClickListener(this::onClickBack);
+        btUpdate.setOnClickListener(this::onClickUpdate);
     }
 
 
@@ -47,5 +50,13 @@ public class BusMapActivity extends AppCompatActivity {
                 pbLoad.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void onClickBack(View view){
+        finish();
+    }
+
+    private void onClickUpdate(View view){
+
     }
 }
