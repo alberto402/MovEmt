@@ -4,7 +4,7 @@
     <string name="appName">MOVEMT</string>
     <string name="stop">Introduce parada</string>
     <string name="path">Selecciona ruta</string>
-    <string name="busses">Localiza autobuses</string>
+    <string name="buses">Localiza autobuses</string>
     <string name="voice">Comando por voz</string>
     <string name="favStops">Paradas favoritas</string>
     <string name="title_activity_speech_view">SpeechViewActivity</string>
