@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -33,16 +34,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback {
-    private boolean mLocationPermissionGranted = false;
     private MapView mMapView;
     ArrayList<LatLng> listPoints;
 
-    private static final int ERROR_DIALOG_REQUEST = 9001;
-    private static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int LOCATION_REQUEST = 500;
-
+    private EditText Origen;
+    private EditText Destino;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +56,8 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
 
         mMapView.getMapAsync(this);
         listPoints = new ArrayList<>();
+        Origen = (EditText) findViewById(R.id.origen);
+        Destino = (EditText) findViewById(R.id.destino);
     }
 
     @Override
@@ -76,15 +76,6 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
     public void onResume() {
         super.onResume();
         mMapView.onResume();
-        /*getChatrooms();
-        if(checkMapServices()){
-            if(mLocationPermissionGranted){
-                getChatrooms();
-            }
-            else{
-                getLocationPermission();
-            }
-        }*/
     }
 
     @Override
@@ -153,6 +144,6 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-    
+
 
 }
