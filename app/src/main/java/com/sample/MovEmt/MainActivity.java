@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickFindBus(View v){
-        //TODO
+        Intent intent = new Intent(this, BusMapActivity.class);
+        startActivity(intent);
     }
 
     void onClickVoiceCommand(View v){
