@@ -1,10 +1,11 @@
-package com.sample.MovEmt.activities;
+package com.sample.MovEmt;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import androidx.core.content.FileProvider;
 
 import com.microsoft.azure.cognitiveservices.vision.computervision.*;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.*;
+import com.sample.MovEmt.stopInfo.StopItem;
 import com.sample.MovEmt.R;
 import com.sample.MovEmt.fragments.LoadingDialogFragment;
 
@@ -36,7 +38,9 @@ import java.text.SimpleDateFormat;
 public class EnterStopActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private String currentPhotoPath = "";
-
+    private Button stopSearch;
+    private EditText stopCode;
+    private boolean info = false;
     private class RecognizeTextExecutor implements Executor {
 
         @Override
@@ -44,6 +48,7 @@ public class EnterStopActivity extends AppCompatActivity {
             new Thread(r).start();
         }
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -130,6 +135,8 @@ public class EnterStopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+        info = extras.getBoolean("info",false);
         setContentView(R.layout.activity_enter_stop_view);
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1000);
@@ -144,7 +151,39 @@ public class EnterStopActivity extends AppCompatActivity {
         btnBack.setOnClickListener((v) -> {
             onClickBackMain(v);
         });
+
+        stopCode = findViewById(R.id.stopCode);
+        stopSearch = findViewById(R.id.stopSearch);
+        stopSearch.setOnClickListener(this::onClickSearch);
     }
+
+
+    private void onClickSearch(View v){
+        runOnUiThread(() -> {
+            String text = stopCode.getText().toString();
+            if(text.equals(""))
+                return;
+
+            try {
+                int stopCode = Integer.parseInt(text);
+                Intent intent;
+                if(info)
+                {
+                     intent = new Intent(v.getContext(), StopInfo.class);
+                }
+                else {
+                     intent = new Intent(v.getContext(), StopBusesActivity.class);
+                }
+                intent.putExtra("stopNumber", stopCode);
+                startActivityForResult(intent, 0);
+
+            } catch (Exception e){
+                Log.e("parada_texto_imagen", text + " is NAN.");
+            }
+        });
+    }
+
+
     void onClickBackMain(View v){
         Intent intent = new Intent (v.getContext(), MainActivity.class);
         startActivityForResult(intent, 0);
@@ -179,6 +218,7 @@ public class EnterStopActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
 
         switch (requestCode) {
             case REQUEST_CODE: {

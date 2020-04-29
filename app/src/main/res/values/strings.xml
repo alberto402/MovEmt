@@ -26,4 +26,6 @@
     <string name="azure_endpoint">https://westeurope.api.cognitive.microsoft.com/</string>
     <string name="recognize_stop_error">No se ha podido reconocer la parada</string>
     <string name="loading_text">Cargando...</string>
+    <string name="bus_line">Línea</string>
+    <string name="next_bus">Próximo</string>
 </resources>
