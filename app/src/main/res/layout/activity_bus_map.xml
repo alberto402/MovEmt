@@ -46,7 +46,7 @@
                 android:text="@string/buses"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
-                android:textSize="33sp" />
+                android:textSize="30sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -59,7 +59,13 @@
         app:layout_constraintBottom_toTopOf="@+id/btUpdate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:mapType="normal"
+        app:uiRotateGestures="false"
+        app:uiScrollGestures="false"
+        app:uiTiltGestures="false"
+        app:uiZoomControls="true"
+        app:uiZoomGestures="false" />
 
     <Button
         android:id="@+id/btUpdate"
