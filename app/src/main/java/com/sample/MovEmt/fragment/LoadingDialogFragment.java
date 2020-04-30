@@ -1,4 +1,4 @@
-package com.sample.MovEmt.fragments;
+package com.sample.MovEmt.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package com.sample.MovEmt.activities;
+package com.sample.MovEmt.activity;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;

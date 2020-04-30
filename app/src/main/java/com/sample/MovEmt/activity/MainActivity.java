@@ -1,4 +1,4 @@
-package com.sample.MovEmt.activities;
+package com.sample.MovEmt.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickInfoStop(View v){
-        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        Intent intent = new Intent (v.getContext(), EnterStopActivity.class);
         intent.putExtra("info", true);
         startActivityForResult(intent, 0);
     }

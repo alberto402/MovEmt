@@ -16,21 +16,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".StopInfo"></activity>
+        <activity android:name=".activity.StopInfoActivity"></activity>
         <activity
-            android:name=".activities.SpeechViewActivity"
+            android:name=".activity.SpeechViewActivity"
             android:label="@string/title_activity_speech_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".StopBusesActivity"
+            android:name=".activity.StopBusesActivity"
             android:label="StopBusesActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".activities.EnterStopActivity"
+            android:name=".activity.EnterStopActivity"
             android:label="@string/title_activity_camera_to_text"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
-        <activity android:name=".activities.MainActivity" >
+        <activity android:name=".activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
