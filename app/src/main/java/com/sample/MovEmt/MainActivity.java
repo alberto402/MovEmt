@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         cvFavStops = findViewById(R.id.cvFavStops);
 
         // set text and icons
-        ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.stop);
+        ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText("Tiempos de espera");
         ((ImageView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_count);
 
         ((TextView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.path);
