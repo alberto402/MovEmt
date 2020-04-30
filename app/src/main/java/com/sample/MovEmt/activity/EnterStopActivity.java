@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -69,80 +70,89 @@ public class EnterStopActivity extends AppCompatActivity {
      * the block of text.
      */
     private void recognizeTextOCRLocal(ComputerVisionClient client, LoadingDialogFragment dialog, File photo) {
-        System.out.println("-----------------------------------------------");
-        System.out.println("RECOGNIZE PRINTED TEXT");
+        Executors.newSingleThreadExecutor().execute(() -> {
+            System.out.println("-----------------------------------------------");
+            System.out.println("RECOGNIZE PRINTED TEXT");
 
-        // Replace this string with the path to your own image.
+            // Replace this string with the path to your own image.
 
-        try {
-            byte[] bytesArray = new byte[(int) photo.length()];
-            FileInputStream fis = new FileInputStream(photo);
-            fis.read(bytesArray); //read file into bytes[]
-            fis.close();
-            OcrResult ocrResultLocal = Executors.newSingleThreadExecutor().submit(() -> client.computerVision().recognizePrintedTextInStream()
-                    .withDetectOrientation(true).withImage(bytesArray).withLanguage(OcrLanguages.ES).execute()).get();
+            try {
+                byte[] bytesArray = new byte[(int) photo.length()];
+                FileInputStream fis = new FileInputStream(photo);
+                fis.read(bytesArray); //read file into bytes[]
+                fis.close();
+                OcrResult ocrResultLocal = client.computerVision().recognizePrintedTextInStream()
+                        .withDetectOrientation(true).withImage(bytesArray).withLanguage(OcrLanguages.ES).execute();
 
-            photo.delete();
-            if (ocrResultLocal != null) {
-                System.out.println();
-                System.out.println("Recognizing printed text from a local image with OCR ...");
-                System.out.println("\nLanguage: " + ocrResultLocal.language());
-                System.out.printf("Text angle: %1.3f\n", ocrResultLocal.textAngle());
-                System.out.println("Orientation: " + ocrResultLocal.orientation());
+                photo.delete();
+                if (ocrResultLocal != null) {
+                    System.out.println();
+                    System.out.println("Recognizing printed text from a local image with OCR ...");
+                    System.out.println("\nLanguage: " + ocrResultLocal.language());
+                    System.out.printf("Text angle: %1.3f\n", ocrResultLocal.textAngle());
+                    System.out.println("Orientation: " + ocrResultLocal.orientation());
 
-                // Gets entire region of text block
-                boolean numberFound = false;
-                for (OcrRegion reg : ocrResultLocal.regions()) {
-                    // Get one line in the text block
-                    for (OcrLine line : reg.lines()) {
-                        for (OcrWord word : line.words()) {
-                            // get bounding box of first word recognized (just to demo)
-                            if ((word.text().length() >= 3 && word.text().length() <= 4)) {
-                                try {
-                                    Integer.parseInt(word.text());
-                                    URL url = new URL(EndPoint.GET_STOP);
-                                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                                    con.setRequestMethod("POST");
-                                    //headers
-                                    con.setRequestProperty("accessToken", Authentication.accessToken);
-                                    con.setRequestProperty("Content-Type", "application/json; utf-8");
-                                    con.setRequestProperty("Accept", "application/json");
-                                    // enable write content
-                                    con.setDoOutput(true);
+                    // Gets entire region of text block
+                    boolean numberFound = false;
+                    for (OcrRegion reg : ocrResultLocal.regions()) {
+                        // Get one line in the text block
+                        for (OcrLine line : reg.lines()) {
+                            for (OcrWord word : line.words()) {
+                                // get bounding box of first word recognized (just to demo)
+                                if ((word.text().length() >= 3 && word.text().length() <= 4)) {
+                                    try {
+                                        Integer.parseInt(word.text());
+                                        URL url = new URL(EndPoint.GET_STOP);
+                                        HttpURLConnection con = null;
 
-                                    // define JSON
-                                    String args = "{\"liststops\": ["
-                                            + word.text()
-                                            + "]}";
-                                    try(OutputStream os = con.getOutputStream()) {
-                                        byte[] input = args.getBytes(StandardCharsets.UTF_8);
-                                        os.write(input, 0, input.length);
+                                        con = (HttpURLConnection) url.openConnection();
+                                        con.setRequestMethod("POST");
+
+                                        //headers
+                                        con.setRequestProperty("accessToken", Authentication.accessToken);
+                                        con.setRequestProperty("Content-Type", "application/json; utf-8");
+                                        con.setRequestProperty("Accept", "application/json");
+                                        // enable write content
+                                        con.setDoOutput(true);
+
+                                        // define JSON
+                                        String args = "{\"liststops\": ["
+                                                + word.text()
+                                                + "]}";
+                                        try(OutputStream os = con.getOutputStream()) {
+                                            byte[] input = args.getBytes(StandardCharsets.UTF_8);
+                                            os.write(input, 0, input.length);
+                                        }
+                                        int status = con.getResponseCode();
+
+                                        if (status == HttpURLConnection.HTTP_OK){
+                                            runOnUiThread(() -> {
+                                                EditText stopCode = findViewById(R.id.stopCodeText);
+                                                stopCode.setText(word.text());
+                                            });
+                                            numberFound = true;
+                                        }
+                                    } catch (NumberFormatException e) {
                                     }
-                                    int status = Executors.newSingleThreadExecutor().submit(() -> con.getResponseCode()).get();
-                                    if (status == HttpURLConnection.HTTP_OK){
-                                        EditText stopCode = findViewById(R.id.stopCodeText);
-                                        stopCode.setText(word.text());
-                                        numberFound = true;
-                                    }
-                                } catch (NumberFormatException e) {
                                 }
                             }
                         }
                     }
-                }
-                dialog.dismiss();
-                if (!numberFound) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
-                    EditText stopCode = findViewById(R.id.stopCodeText);
-                    stopCode.setText("");
+                    dialog.dismiss();
+                    if (!numberFound) {
+                        runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
+                            EditText stopCode = findViewById(R.id.stopCodeText);
+                            stopCode.setText("");
+                        });
+                    }
                 }
             }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
