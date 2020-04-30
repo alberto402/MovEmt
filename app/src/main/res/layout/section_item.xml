@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10px"
+    android:layout_weight="2"
+    android:orientation="vertical">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/back"
+            android:text="Tramo"
+            />
+        <TextView
+            android:id="@+id/order"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/back"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="" />
+
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Tipo de tramo" />
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Distancia" />
+        <TextView
+            android:id="@+id/sectionDistance"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Duracion" />
+        <TextView
+            android:id="@+id/sectionDuration"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Línea de bus" />
+        <TextView
+            android:id="@+id/idLine"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Origen" />
+        <TextView
+            android:id="@+id/sourceName"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Parada de origen" />
+        <TextView
+            android:id="@+id/sourceIdStop"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Descripción" />
+        <TextView
+            android:id="@+id/sourceDescription"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Destino" />
+        <TextView
+            android:id="@+id/destinationName"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

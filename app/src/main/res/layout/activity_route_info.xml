@@ -1,9 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RouteInfo">
+    tools:context=".StopInfo"
+    tools:ignore="ExtraText">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingBottom="20dp"
+    android:paddingTop="60dp">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/colorCardBackground">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <FrameLayout
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20px"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/InfoRuta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Información de la ruta"
+                android:gravity="center"
+                android:textAllCaps="true"
+                android:textSize="35sp"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/back"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="12"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="205dp"
+                        android:layout_height="44dp"
+                        android:text="Distancia"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/distance"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+
+
+                        />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="12"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+
+                        android:layout_width="204dp"
+                        android:layout_height="16dp"
+                        android:text="Hora de salida"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/departureTime"
+                        android:layout_width="191dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="12"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="204dp"
+                        android:layout_height="wrap_content"
+                        android:text="Descripción"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="191dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="12"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="204dp"
+                        android:layout_height="wrap_content"
+                        android:text="Hora de llegada"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:id="@+id/arrivalTime"
+                        android:layout_width="191dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="12"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="204dp"
+                        android:layout_height="wrap_content"
+                        android:text="Duración"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:id="@+id/duration"
+                        android:layout_width="191dp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSections"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
