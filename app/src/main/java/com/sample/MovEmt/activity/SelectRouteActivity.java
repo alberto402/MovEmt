@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,10 +30,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sample.MovEmt.R;
 
 import java.util.ArrayList;
 
-public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback {
+public class SelectRouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mMapView;
     ArrayList<LatLng> listPoints;
 

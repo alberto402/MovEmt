@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RouteInfo extends AppCompatActivity {
+public class RouteInfoActivity extends AppCompatActivity {
     public String response;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

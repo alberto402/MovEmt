@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickSelectPath(View v){
-        Intent intent = new Intent (v.getContext(), SelectRoute.class);
+        Intent intent = new Intent (v.getContext(), SelectRouteActivity.class);
         startActivityForResult(intent, 0);
     }
 
