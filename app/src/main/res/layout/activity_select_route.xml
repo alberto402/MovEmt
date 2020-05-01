@@ -98,6 +98,14 @@
                     android:layout_margin="8dp" />
             </RelativeLayout>
 
+            <Button
+                android:id="@+id/getRouteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calcular ruta"
+                android:layout_marginStart="140dp"/>
+
+
 
         </LinearLayout>
     </LinearLayout>
