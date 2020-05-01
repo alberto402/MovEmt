@@ -87,6 +87,12 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
             // update view
         });
         thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Bundle mapViewBundle = null;
         if (savedInstanceState != null)
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -168,8 +174,8 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         try {
             //URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(currentLocation.getLongitude()),
                     //String.valueOf(currentLocation.getLatitude()), String.valueOf(200)));
-            URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(-3.7038),
-                    String.valueOf(40.4168), String.valueOf(200)));
+            URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(-3.70325),
+                    String.valueOf(40.4167), String.valueOf(200)));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             //headers
