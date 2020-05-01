@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -37,11 +38,15 @@ import java.util.ArrayList;
 public class SelectRouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mMapView;
     ArrayList<LatLng> listPoints;
-
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int LOCATION_REQUEST = 500;
     private EditText Origen;
     private EditText Destino;
+    private String cLatOrig;
+    private String cLonOrig;
+    private String cLatDest;
+    private String cLonDest;
+    private Button calculateRoute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,14 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
         listPoints = new ArrayList<>();
         Origen = (EditText) findViewById(R.id.origen);
         Destino = (EditText) findViewById(R.id.destino);
+
+        calculateRoute = findViewById(R.id.getRouteButton);
+        calculateRoute.setOnClickListener(this::onClickCalculate);
+
+        Button btn_back = (Button) findViewById(R.id.Back);
+        btn_back.setOnClickListener((v) -> {
+            onClickBackMain(v);
+        });
     }
 
     @Override
@@ -123,8 +136,11 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
 
                 if (listPoints.size() == 2){
                     //Create URL to get request from first marker to second marker
-                    Toast.makeText(getApplicationContext(),"origen: Latitud:"+listPoints.get(0).latitude + " Longitud: "+ listPoints.get(0).longitude, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(),"destino: Latitud:"+listPoints.get(1).latitude + " Longitud: "+ listPoints.get(1).longitude, Toast.LENGTH_SHORT).show();
+                    cLatOrig = String.valueOf(listPoints.get(0).latitude);
+                    cLonOrig = String.valueOf(listPoints.get(0).longitude);
+                    cLatDest = String.valueOf(listPoints.get(1).latitude);
+                    cLonDest = String.valueOf(listPoints.get(1).longitude);
+
                 }
             }
         });
@@ -145,6 +161,26 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-
-
+    public void onClickCalculate(View view){
+        if(!(Origen.getText().toString() == null || Origen.getText().toString().equals(""))){
+            String[] parts = Origen.getText().toString().split(",");
+            cLatOrig = parts[0];
+            cLonOrig = parts[1];
+        }
+        if(!(Destino.getText().toString() == null || Destino.getText().toString().equals(""))){
+            String[] parts = Destino.getText().toString().split(",");
+            cLatDest = parts[0];
+            cLonDest = parts[1];
+        }
+        Intent i = new Intent(this, RouteInfo.class);
+        i.putExtra("cLatOrig", cLatOrig);
+        i.putExtra("cLonOrig", cLonOrig);
+        i.putExtra("cLatDest", cLatDest);
+        i.putExtra("cLonDest", cLonDest);
+        startActivity(i);
+    }
+    void onClickBackMain(View v){
+        Intent intent = new Intent (v.getContext(), MainActivity.class);
+        startActivityForResult(intent, 0);
+    }
 }

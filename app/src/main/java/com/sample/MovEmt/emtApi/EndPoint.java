@@ -6,4 +6,5 @@ public class EndPoint {
             "/busemtmad/stops/%s/arrives/";
     public static final String INFO_STOP = "https://openapi.emtmadrid.es/v1/transport/busemtmad/stops/%s/detail/";
     public static final String GET_STOP = "https://openapi.emtmadrid.es/v1/transport/busemtmad/stops/list/";
+    public static final String ROUTE = "https://openapi.emtmadrid.es/v1/transport/busemtmad/travelplan/";
 }
