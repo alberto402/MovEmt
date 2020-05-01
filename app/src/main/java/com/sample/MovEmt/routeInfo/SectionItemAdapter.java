@@ -27,8 +27,8 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
         SectionItem section = alSectionsItems.get(position);
-        holder.getSectionDistance().setText(section.getSectionDistance());
-        holder.getSectionDuration().setText(section.getSectionDuration());
+        holder.getSectionDistance().setText(section.getSectionDistance() + " km");
+        holder.getSectionDuration().setText(section.getSectionDuration() + " min");
         holder.getOrder().setText(section.getOrder());
         holder.getType().setText(section.getType());
         holder.getIdLine().setText(section.getIdLine());
@@ -36,6 +36,7 @@ public class SectionItemAdapter extends RecyclerView.Adapter<SectionViewHolder> 
         holder.getSourceName().setText(section.getSourceName());
         holder.getSourceDescription().setText(section.getSourceDescription());
         holder.getDestinationName().setText(section.getDestinationName());
+        holder.getDestinationDescription().setText(section.getDestinationDescription());
     }
 
     @Override

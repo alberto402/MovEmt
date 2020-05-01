@@ -36,7 +36,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -44,7 +44,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Tipo de tramo" />
+            android:text="Tipo de tramo:" />
         <TextView
             android:id="@+id/type"
             android:layout_width="200dp"
@@ -54,7 +54,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -62,7 +62,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Distancia" />
+            android:text="Distancia: " />
         <TextView
             android:id="@+id/sectionDistance"
             android:layout_width="200dp"
@@ -72,7 +72,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -80,7 +80,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Duracion" />
+            android:text="Duración del tramo:" />
         <TextView
             android:id="@+id/sectionDuration"
             android:layout_width="200dp"
@@ -90,7 +90,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -98,7 +98,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Línea de bus" />
+            android:text="Línea de bus:" />
         <TextView
             android:id="@+id/idLine"
             android:layout_width="200dp"
@@ -108,7 +108,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -116,7 +116,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Origen" />
+            android:text="Origen:" />
         <TextView
             android:id="@+id/sourceName"
             android:layout_width="200dp"
@@ -126,7 +126,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -134,7 +134,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Parada de origen" />
+            android:text="Parada de origen:" />
         <TextView
             android:id="@+id/sourceIdStop"
             android:layout_width="200dp"
@@ -144,7 +144,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="70dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -152,7 +152,7 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Descripción" />
+            android:text="Descripción origen:" />
         <TextView
             android:id="@+id/sourceDescription"
             android:layout_width="200dp"
@@ -162,7 +162,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_weight="11"
         android:orientation="horizontal"
         android:weightSum="2">
@@ -170,9 +170,27 @@
 
             android:layout_width="200dp"
             android:layout_height="match_parent"
-            android:text="Destino" />
+            android:text="Destino:" />
         <TextView
             android:id="@+id/destinationName"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="TextView" />
+    </LinearLayout>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_weight="11"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <TextView
+
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:text="Descripción destino:" />
+        <TextView
+            android:id="@+id/destinationDescription"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:text="TextView" />

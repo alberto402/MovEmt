@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +27,12 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,19 +43,19 @@ import java.util.Map;
 public class RouteInfo extends AppCompatActivity {
     private RouteItem routeI;
     public String response;
-    public String sourceLat;
-    public String sourceLon;
-    public String destLat;
-    public String destLon;
+    public double sourceLat;
+    public double sourceLon;
+    public double destLat;
+    public double destLon;
     public RecyclerView rvSections;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        sourceLat = intent.getStringExtra("cLatOrig");
-        sourceLon = intent.getStringExtra("cLonOrig");
-        destLat = intent.getStringExtra("cLatDest");
-        destLon = intent.getStringExtra("cLonDest");
+        sourceLat = Double.parseDouble(intent.getStringExtra("cLatOrig"));
+        sourceLon = Double.parseDouble(intent.getStringExtra("cLonOrig"));
+        destLat = Double.parseDouble(intent.getStringExtra("cLatDest"));
+        destLon = Double.parseDouble(intent.getStringExtra("cLonDest"));
         setContentView(R.layout.activity_route_info);
 
         rvSections = findViewById(R.id.rvSections);
@@ -63,7 +67,7 @@ public class RouteInfo extends AppCompatActivity {
             runOnUiThread(()->{
                 rvSections.setLayoutManager(new LinearLayoutManager(this));
                 TextView distance = findViewById(R.id.distance);
-                distance.setText(routeI.getDistance());
+                distance.setText(routeI.getDistance() + " km");
                 TextView departureTime = findViewById(R.id.departureTime);
                 departureTime.setText(routeI.getDepartureTime());
                 TextView description = findViewById(R.id.description);
@@ -71,14 +75,16 @@ public class RouteInfo extends AppCompatActivity {
                 TextView arrivalTime = findViewById(R.id.arrivalTime);
                 arrivalTime.setText(routeI.getArrivalTime());
                 TextView duration = findViewById(R.id.duration);
-                duration.setText(routeI.getDuration());
+                duration.setText(routeI.getDuration() + "min");
 
                 rvSections.setAdapter(new SectionItemAdapter(routeI.getLines()));
             });
         });
         thread.start();
-        getInfo();
-        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+        Button btn_back = (Button) findViewById(R.id.Back);
+        btn_back.setOnClickListener((v) -> {
+            onClickBack(v);
+        });
     }
 
     private void getInfo(){
@@ -96,37 +102,6 @@ public class RouteInfo extends AppCompatActivity {
 
         try {
             URL url = new URL(String.format(EndPoint.ROUTE));
-
-            Map<String, Object> params = new LinkedHashMap<>();
-            params.put("routeType","P");
-            params.put("itinerary",true);
-            params.put("coordinateXFrom",sourceLat);
-            params.put("coordinateYFrom",sourceLon);
-            params.put("coordinateXTo",destLat);
-            params.put("coordinateYTo",destLon);
-            params.put("originName","");
-            params.put("destinationName","");
-            params.put("polygon",null);
-            params.put("day",dia);
-            params.put("month",mes);
-            params.put("year",anyo);
-            params.put("hour",hora);
-            params.put("minute",min);
-            params.put("culture","es");
-            params.put("allowBus",true);
-            params.put("allowBike",false);
-
-            StringBuilder postData = new StringBuilder();
-            for (Map.Entry<String, Object> param : params.entrySet()) {
-                if (postData.length() != 0)
-                    postData.append('&');
-                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                postData.append('=');
-                postData.append(URLEncoder.encode(String.valueOf(param.getValue()),
-                        "UTF-8"));
-            }
-            byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             //headers
@@ -134,22 +109,44 @@ public class RouteInfo extends AppCompatActivity {
             con.setRequestProperty("Content-Type", "application/json; utf-8");
             con.setRequestProperty("Accept", "application/json");
 
-
+            // enable write content
             con.setDoOutput(true);
-            con.getOutputStream().write(postDataBytes);
-            Reader in = new BufferedReader(new InputStreamReader(
-                    con.getInputStream(), "UTF-8"));
 
-            for (int c = in.read(); c != -1; c = in.read())
-                System.out.print((char) c);
-            /*int status = con.getResponseCode();
+            //Define JSON
+            String params = "{\"routeType\":\"P\","+
+                    "\"itinerary\": true,"+
+                    "\"coordinateXFrom\":"+ sourceLon  + "," +
+                    "\"coordinateYFrom\":"+ sourceLat + "," +
+                    "\"coordinateXTo\":"+ destLon + "," +
+                    "\"coordinateYTo\":"+ destLat  + "," +
+                    "\"originName\": \"\"," +
+                    "\"destinationName\": \"\"," +
+                    "\"polygon\": null," +
+                    "\"day\":"+ dia + "," +
+                    "\"month\":"+ mes + "," +
+                    "\"year\":"+ anyo + "," +
+                    "\"hour\":"+ hora + "," +
+                    "\"minute\":"+ min + "," +
+                    "\"culture\": \"es\"," +
+                    "\"allowBus\": true," +
+                    "\"allowBike\": false }";
+
+            // write them to connection
+            try(OutputStream os = con.getOutputStream()) {
+                byte[] input = params.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            int status = con.getResponseCode();
             if(status != HttpURLConnection.HTTP_OK){
-                Log.e("RoutesActivity", "Api error while calling routes");
+                Log.e("RouteInfoActivity", "Api error while calling route info");
                 return;
             }
-            response = new ResponseReader().getResponse(con);
+
+            String response = new ResponseReader().getResponse(con);
             parseInfoFromJson(response);
-            con.disconnect();*/
+
+            con.disconnect();
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -158,15 +155,15 @@ public class RouteInfo extends AppCompatActivity {
 
     private void parseInfoFromJson(String response) throws JSONException {
         JSONObject res = new JSONObject(response);
-        JSONArray data = res.getJSONArray("data");
-        String distance = String.valueOf(data.getDouble(0));
-        String departureTime = data.getString(1);
-        String description = data.getString(2);
-        String arrivalTime = data.getString(3);
-        String duration = String.valueOf(data.getInt(4));
-        ArrayList<SectionItem> sections = parseSectionsFromJson(data.getJSONArray(5));
+        JSONObject data = res.getJSONObject("data");
+        String distance = String.valueOf(data.getDouble("distance"));
+        String departureTime = data.getString("departureTime");
+        String description = data.getString("description");
+        String arrivalTime = data.getString("arrivalTime");
+        String duration = String.valueOf(data.getInt("duration"));
+        ArrayList<SectionItem> sections = parseSectionsFromJson(data.getJSONArray("sections"));
         routeI = new RouteItem(distance,departureTime,description,arrivalTime,duration,sections);
-
+        int i = 2;
     }
     private ArrayList<SectionItem> parseSectionsFromJson(JSONArray sections) throws JSONException {
         ArrayList<SectionItem> aSections = new ArrayList<SectionItem>();
@@ -181,24 +178,35 @@ public class RouteInfo extends AppCompatActivity {
             String sourceName ="";
             String sourceDescription="";
             String destinationName= "";
+            String destinationDescription= "";
             if(sectionType.equalsIgnoreCase("Bus"))
             {
                 sectionIdline = section.getString("idLine");
             }
             JSONObject sectionDestination = section.getJSONObject("destination");
             JSONObject sectionSource = section.getJSONObject("source");
-            if (sectionSource != null){
+            if (!sectionSource.toString().equals("{}")){
                 JSONObject sourceProperties = sectionSource.getJSONObject("properties");
-                sourceIdStop = sourceProperties.getString("idStop");
-                sourceName = sourceProperties.getString("name");
-                sourceDescription = sourceProperties.getString("description");
+                if (!sourceProperties.toString().equals("{}")){
+                    sourceIdStop = sourceProperties.getString("idStop");
+                    sourceName = sourceProperties.getString("name");
+                    sourceDescription = sourceProperties.getString("description");
+                }
+
             }
-            if (sectionDestination != null){
+            if (!sectionDestination.toString().equals("{}")){
                 JSONObject destinationProperties = sectionDestination.getJSONObject("properties");
-                destinationName = destinationProperties.getString("name");
+                if (!destinationProperties.toString().equals("{}")){
+                    destinationName = destinationProperties.getString("name");
+                    destinationDescription = destinationProperties.getString("description");
+                }
             }
-            aSections.add(new SectionItem(sectionDistance,sectionDuration,sectionOrder,sectionType,sectionIdline,sourceIdStop,sourceName,sourceDescription,destinationName));
+            aSections.add(new SectionItem(sectionDistance,sectionDuration,sectionOrder,sectionType,sectionIdline,sourceIdStop,sourceName,sourceDescription,destinationName,destinationDescription));
         }
         return aSections;
+    }
+    void onClickBack(View v){
+        Intent intent = new Intent (v.getContext(), SelectRoute.class);
+        startActivityForResult(intent, 0);
     }
 }

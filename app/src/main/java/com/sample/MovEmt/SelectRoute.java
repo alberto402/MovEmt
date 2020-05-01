@@ -66,6 +66,11 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
 
         calculateRoute = findViewById(R.id.getRouteButton);
         calculateRoute.setOnClickListener(this::onClickCalculate);
+
+        Button btn_back = (Button) findViewById(R.id.Back);
+        btn_back.setOnClickListener((v) -> {
+            onClickBackMain(v);
+        });
     }
 
     @Override
@@ -173,5 +178,8 @@ public class SelectRoute extends AppCompatActivity implements OnMapReadyCallback
         i.putExtra("cLonDest", cLonDest);
         startActivity(i);
     }
-
+    void onClickBackMain(View v){
+        Intent intent = new Intent (v.getContext(), MainActivity.class);
+        startActivityForResult(intent, 0);
+    }
 }

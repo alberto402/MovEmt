@@ -10,9 +10,10 @@ public class SectionItem {
     private String sourceName;
     private String sourceDescription;
     private String destinationName;
+    private String destinationDescription;
 
     public SectionItem (String sectionDistance,String sectionDuration,String order,String type,String idLine,
-                        String sourceIdStop,String sourceName, String sourceDescription, String destinationName){
+                        String sourceIdStop,String sourceName, String sourceDescription, String destinationName, String destinationDescription){
         this.sectionDistance=sectionDistance;
         this.sectionDuration=sectionDuration;
         this.order=order;
@@ -22,6 +23,7 @@ public class SectionItem {
         this.sourceName=sourceName;
         this.sourceDescription=sourceDescription;
         this.destinationName=destinationName;
+        this.destinationDescription=destinationDescription;
     }
 
     public String getSectionDistance() { return sectionDistance; }
@@ -33,4 +35,5 @@ public class SectionItem {
     public String getSourceName() { return sourceName; }
     public String getSourceDescription() { return sourceDescription; }
     public String getDestinationName() { return destinationName; }
+    public String getDestinationDescription() { return destinationDescription; }
 }

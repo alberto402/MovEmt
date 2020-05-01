@@ -18,6 +18,7 @@ public class SectionViewHolder  extends RecyclerView.ViewHolder{
     private TextView sourceName;
     private TextView sourceDescription;
     private TextView destinationName;
+    private TextView destinationDescription;
 
     public SectionViewHolder (@NonNull View itemView){
         super(itemView);
@@ -30,6 +31,7 @@ public class SectionViewHolder  extends RecyclerView.ViewHolder{
         sourceName=itemView.findViewById(R.id.sourceName);
         sourceDescription=itemView.findViewById(R.id.sourceDescription);
         destinationName=itemView.findViewById(R.id.destinationName);
+        destinationDescription=itemView.findViewById(R.id.destinationDescription);
     }
 
     public TextView getSectionDistance() { return sectionDistance; }
@@ -41,4 +43,5 @@ public class SectionViewHolder  extends RecyclerView.ViewHolder{
     public TextView getSourceName() { return sourceName; }
     public TextView getSourceDescription() { return sourceDescription; }
     public TextView getDestinationName() { return destinationName; }
+    public TextView getDestinationDescription() { return destinationDescription; }
 }
