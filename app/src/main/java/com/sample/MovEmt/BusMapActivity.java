@@ -73,7 +73,10 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_bus_map);
 
         btBack = findViewById(R.id.btBack);
-        btUpdate = findViewById(R.id.btUpdate);
+        btUpdate = (Button) findViewById(R.id.btUpdate);
+        btUpdate.setOnClickListener((v) ->{
+            onClickUpdate(v);
+        });
         pbLoad = findViewById(R.id.pbLoad);
         mvMap = findViewById(R.id.mvMap);
         buses = new ArrayList<>();
@@ -174,8 +177,8 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         try {
             //URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(currentLocation.getLongitude()),
                     //String.valueOf(currentLocation.getLatitude()), String.valueOf(200)));
-            URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(-3.70325),
-                    String.valueOf(40.4167), String.valueOf(200)));
+            URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(-3.6771304),
+                    String.valueOf(40.4629084), String.valueOf(200)));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             //headers
@@ -267,12 +270,23 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void onClickUpdate(View view) {
+        Thread thread = new Thread(() -> {
+            getStops();
+            getBuses();
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         mvMap.getMapAsync(this);
         switchLoadingState();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
             return;
