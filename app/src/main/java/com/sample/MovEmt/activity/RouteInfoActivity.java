@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,13 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
+import com.sample.MovEmt.fragment.LoadingDialogFragment;
 import com.sample.MovEmt.routeInfo.RouteItem;
 import com.sample.MovEmt.routeInfo.SectionItem;
 import com.sample.MovEmt.routeInfo.SectionItemAdapter;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class RouteInfo extends AppCompatActivity {
+public class RouteInfoActivity extends AppCompatActivity {
     private RouteItem routeI;
     public String response;
     public double sourceLat;
@@ -60,11 +61,15 @@ public class RouteInfo extends AppCompatActivity {
 
         rvSections = findViewById(R.id.rvSections);
         rvSections.setHasFixedSize(true);
+
+        LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
+        loadingDialog.show(this.getSupportFragmentManager(), "LoadingDialogFragment");
         //request data on background
         Thread thread = new Thread(() -> {
             getInfo();
             // update view
             runOnUiThread(()->{
+                loadingDialog.dismiss();
                 rvSections.setLayoutManager(new LinearLayoutManager(this));
                 TextView distance = findViewById(R.id.distance);
                 distance.setText(routeI.getDistance() + " km");
@@ -81,9 +86,9 @@ public class RouteInfo extends AppCompatActivity {
             });
         });
         thread.start();
-        Button btn_back = (Button) findViewById(R.id.Back);
+        Button btn_back = findViewById(R.id.Back);
         btn_back.setOnClickListener((v) -> {
-            onClickBack(v);
+            onBackPressed();
         });
     }
 
@@ -204,9 +209,5 @@ public class RouteInfo extends AppCompatActivity {
             aSections.add(new SectionItem(sectionDistance,sectionDuration,sectionOrder,sectionType,sectionIdline,sourceIdStop,sourceName,sourceDescription,destinationName,destinationDescription));
         }
         return aSections;
-    }
-    void onClickBack(View v){
-        Intent intent = new Intent (v.getContext(), SelectRoute.class);
-        startActivityForResult(intent, 0);
     }
 }

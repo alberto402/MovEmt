@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -17,6 +17,8 @@ import com.sample.MovEmt.emtApi.ResponseReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import com.sample.MovEmt.R;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -92,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickEnterStop(View v){
-        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        Intent intent = new Intent (v.getContext(), EnterStopActivity.class);
         intent.putExtra("info", false);
         startActivityForResult(intent, 0);
     }
 
     void onClickSelectPath(View v){
-        Intent intent = new Intent (v.getContext(), SelectRoute.class);
+        Intent intent = new Intent (v.getContext(), SelectRouteActivity.class);
         startActivityForResult(intent, 0);
     }
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickInfoStop(View v){
-        Intent intent = new Intent (v.getContext(), CameraToTextActivity.class);
+        Intent intent = new Intent (v.getContext(), EnterStopActivity.class);
         intent.putExtra("info", true);
         startActivityForResult(intent, 0);
     }

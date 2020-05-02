@@ -1,13 +1,10 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -20,7 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.IOException;
+import com.sample.MovEmt.R;
+
 import java.util.ArrayList;
 import java.util.Locale;
 

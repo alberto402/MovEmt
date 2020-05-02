@@ -1,10 +1,10 @@
 <resources>
-    <string name="google_maps_api_key"></string>
+    <string name="google_maps_api_key">AIzaSyAbdVmlVz9PKLS9_VJ47urlJWCVDVVyy-E</string>
     <string name="app_name">MovEmt</string>
     <string name="appName">MOVEMT</string>
     <string name="stop">Introduce parada</string>
     <string name="path">Selecciona ruta</string>
-    <string name="buses">Localiza autobuses</string>
+    <string name="busses">Localiza autobuses</string>
     <string name="voice">Comando por voz</string>
     <string name="favStops">Paradas favoritas</string>
     <string name="title_activity_speech_view">SpeechViewActivity</string>
@@ -19,14 +19,14 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="c_digo_de_parada">Código de parada</string>
     <string name="introducir_parada">Introducir Parada</string>
-    <string name="buscar">Buscar</string>
+    <string name="buscar_parada">Buscar Parada</string>
     <string name="image">IMAGE</string>
     <string name="introduce_el_c_digo_de_parada_o_toma_una_foto_con_la_c_mara_para_obtener_informaci_n">Introduce el código de parada o toma una foto con la cámara para obtener información</string>
     <string name="tomar_foto">Tomar foto</string>
     <string name="azure_subscription_key">bf017d6bf0194f4687b648315e9d1cda</string>
     <string name="azure_endpoint">https://westeurope.api.cognitive.microsoft.com/</string>
     <string name="recognize_stop_error">No se ha podido reconocer la parada</string>
+    <string name="loading_text">Cargando...</string>
     <string name="bus_line">Línea</string>
     <string name="next_bus">Próximo</string>
-    <string name="title_activity_maps">Map</string>
 </resources>

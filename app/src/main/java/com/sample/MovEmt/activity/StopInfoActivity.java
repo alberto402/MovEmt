@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +11,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
@@ -29,7 +30,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class StopInfo extends AppCompatActivity {
+public class StopInfoActivity extends AppCompatActivity {
     private StopItem stopI;
     private int stopNumber;
     private RecyclerView rvLines;
@@ -97,6 +98,7 @@ public class StopInfo extends AppCompatActivity {
         JSONObject stop = stops.getJSONObject(0);
         ArrayList<LineItem> lines = parseLinesFromJson(stop.getJSONArray("dataLine"));
         stopI = new StopItem(stop.getString("stop"),stop.getString("name"),lines,stop.getString("postalAddress") );
+
 
     }
     private ArrayList<LineItem> parseLinesFromJson(JSONArray lines) throws JSONException {

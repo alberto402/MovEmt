@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sample.MovEmt.R;
 import com.sample.MovEmt.busStopItem.BusItem;
 import com.sample.MovEmt.busStopItem.BusItemAdapter;
 import com.sample.MovEmt.emtApi.Authentication;

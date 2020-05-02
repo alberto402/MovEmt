@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="@color/colorCardBackground"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp">
+
+                <FrameLayout
+                    android:layout_width="4dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:text="@string/stop"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="36sp" />
+
+                <Button
+                    android:id="@+id/Back"
+                    android:layout_width="37dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/abc_vector_test"
+                    android:backgroundTint="#1DA1DD" />
+
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/capturePhotoButton"
+                android:layout_width="match_parent"
+                android:layout_height="285dp"
+
+                android:layout_marginStart="43dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="43dp"
+                android:layout_marginBottom="50dp"
+                android:background="@android:drawable/ic_menu_camera"
+                android:backgroundTint="@color/colorPrimary" />
+
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/introduce_el_c_digo_de_parada_o_toma_una_foto_con_la_c_mara_para_obtener_informaci_n"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/stopCodeText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoText="false"
+                android:hint="@string/c_digo_de_parada"
+                android:inputType="number"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textColorHighlight="@color/colorPrimary"
+                android:textColorLink="@color/colorPrimary"
+                android:textCursorDrawable="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/searchStopButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/buscar_parada" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
