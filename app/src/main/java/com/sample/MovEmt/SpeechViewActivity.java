@@ -1,7 +1,9 @@
 package com.sample.MovEmt;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
@@ -116,7 +118,49 @@ public class SpeechViewActivity extends AppCompatActivity {
                     if (speechStatus == TextToSpeech.ERROR) {
                         Log.e("TTS", "Error in converting Text to Speech!");
                     }
-                }
+                    Intent intent;
+                    if(result.get(0).contains("tiempo") ){
+                        String aux[]=result.get(0).split(" ");
+                        for(String a : aux){
+                            try{
+                                int num = Integer.parseInt(a);
+                                intent = new Intent(this, StopBusesActivity.class);
+                                intent.putExtra("stopNumber",num );
+                                startActivityForResult(intent, 0);
+                            }
+                            catch (Exception e){
+
+                            }
+                        }
+                    }
+                    else if(result.get(0).contains("información")){
+                        String aux[]=result.get(0).split(" ");
+                        for(String a : aux){
+                            try{
+                                int num = Integer.parseInt(a);
+                                intent = new Intent(this, StopInfo.class);
+                                intent.putExtra("stopNumber",num );
+                                startActivityForResult(intent, 0);
+                            }
+                            catch (Exception e){
+
+                            }
+                        }
+                    }
+                    else{
+                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                        dialogo1.setTitle("Error en busqueda");
+                        dialogo1.setMessage("No entiendo lo que quieres decir. Incluye palabras como: tiempo , información y no olvide el número de parada");
+                        dialogo1.setCancelable(false);
+                        dialogo1.setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                finish();
+                            }
+                        });
+                        dialogo1.show();
+                    }
+
+                    }
                 break;
             }
 
