@@ -3,10 +3,14 @@ package com.sample.MovEmt;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -24,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -67,6 +72,7 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     private String stopId;
     ArrayList<LatLng> buses;
     ArrayList<String> lineas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +80,7 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
         btBack = findViewById(R.id.btBack);
         btUpdate = (Button) findViewById(R.id.btUpdate);
-        btUpdate.setOnClickListener((v) ->{
+        btUpdate.setOnClickListener((v) -> {
             onClickUpdate(v);
         });
         pbLoad = findViewById(R.id.pbLoad);
@@ -83,8 +89,9 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         lineas = new ArrayList<>();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        fetchLastLocation();
+
         Thread thread = new Thread(() -> {
+            fetchLastLocation();
             getStops();
             getBuses();
             // update view
@@ -104,7 +111,6 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         mvMap.getMapAsync(this);
         btBack.setOnClickListener(this::onClickBack);
         btUpdate.setOnClickListener(this::onClickUpdate);
-
 
 
         //mvMap.getMapAsync(this);
@@ -135,13 +141,13 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
                     "\"DateTime_Referenced_Incidencies_YYYYMMDD\":\"20190923\"}";
 
             // write them to connection
-            try(OutputStream os = con.getOutputStream()) {
+            try (OutputStream os = con.getOutputStream()) {
                 byte[] input = args.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
 
             int status = con.getResponseCode();
-            if(status != HttpURLConnection.HTTP_OK){
+            if (status != HttpURLConnection.HTTP_OK) {
                 Log.e("StopBusesActivity", "Api error while calling buses arrival");
                 return;
             }
@@ -161,24 +167,24 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         JSONArray data = res.getJSONArray("data");
         JSONObject arr = data.getJSONObject(0);
         JSONArray arrives = arr.getJSONArray("Arrive");
-        for (int i=0; i< arrives.length(); i++){
+        for (int i = 0; i < arrives.length(); i++) {
             JSONObject bus = arrives.getJSONObject(i);
             String line = bus.getString("line");
             JSONObject geometry = bus.getJSONObject("geometry");
             JSONArray coordinates = geometry.getJSONArray("coordinates");
-            LatLng coords = new LatLng(coordinates.getDouble(1),coordinates.getDouble(0));
+            LatLng coords = new LatLng(coordinates.getDouble(1), coordinates.getDouble(0));
             buses.add(coords);
             lineas.add(line);
         }
 
     }
 
-    private void getStops(){
+    private void getStops() {
         try {
-            //URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(currentLocation.getLongitude()),
-                    //String.valueOf(currentLocation.getLatitude()), String.valueOf(200)));
-            URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(-3.6771304),
-                    String.valueOf(40.4629084), String.valueOf(200)));
+            URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(currentLocation.getLongitude()),
+                    String.valueOf(currentLocation.getLatitude()), String.valueOf(200)));
+            //URL url = new URL(String.format(EndPoint.NEAR_STOPS, String.valueOf(-3.6771304),
+            //String.valueOf(40.4629084), String.valueOf(200)));
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             //headers
@@ -189,7 +195,7 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
             //con.setDoOutput(true);
             int status = con.getResponseCode();
-            if(status != HttpURLConnection.HTTP_OK){
+            if (status != HttpURLConnection.HTTP_OK) {
                 Log.e("BusMapActivity", "Api error while calling near stops");
                 return;
             }
@@ -216,21 +222,12 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void fetchLastLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null){
-                    currentLocation = location;
-                    Toast.makeText(getApplicationContext(),currentLocation.getLatitude() + " " +
-                            currentLocation.getLongitude(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
     }
 
 
@@ -270,7 +267,10 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void onClickUpdate(View view) {
+        buses.clear();
+        lineas.clear();
         Thread thread = new Thread(() -> {
+            fetchLastLocation();
             getStops();
             getBuses();
         });
@@ -291,7 +291,7 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
             return;
         }
-
+        googleMap.clear();
         googleMap.setMyLocationEnabled(true);
 
         LatLng nearStop = new LatLng(stopLat,stopLon);
@@ -300,15 +300,21 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         googleMap.addMarker(nStop);
         for (int i=0; i < buses.size(); i++){
             MarkerOptions autobus = new MarkerOptions().position(buses.get(i)).title("Línea: " + lineas.get(i));
-            autobus.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            autobus.icon(bitmapDescriptorFromVector(this,R.drawable.ic_bus_foreground));
             googleMap.addMarker(autobus);
         }
-
-
         // show map
         switchLoadingState();
     }
-
+    //Método para pintar autobuses de icono
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
     @Override
     public void onResume() {
         super.onResume();
