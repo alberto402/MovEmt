@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView"
         app:mapType="normal"
         app:uiRotateGestures="false"
-        app:uiScrollGestures="true"
+        app:uiScrollGestures="false"
         app:uiTiltGestures="false"
         app:uiZoomControls="true"
         app:uiZoomGestures="false" />
