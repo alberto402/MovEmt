@@ -1,44 +1,35 @@
 package com.sample.MovEmt;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,8 +37,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -73,10 +62,15 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     ArrayList<LatLng> buses;
     ArrayList<String> lineas;
 
+    private Handler updateHandler;
+    private Runnable updateRunnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bus_map);
+
+        updateHandler = new Handler();
 
         btBack = findViewById(R.id.btBack);
         btUpdate = (Button) findViewById(R.id.btUpdate);
@@ -326,6 +320,25 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         mvMap.onResume();
+
+        updateHandler.postDelayed(updateRunnable = () -> {
+            buses.clear();
+            lineas.clear();
+            Thread thread = new Thread(() -> {
+                fetchLastLocation();
+                getStops();
+                getBuses();
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mvMap.getMapAsync(this);
+            switchLoadingState();
+            updateHandler.postDelayed(updateRunnable,1000);
+        }, 1000);
     }
 
     @Override
@@ -344,6 +357,7 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onPause() {
         super.onPause();
         mvMap.onPause();
+        updateHandler.removeCallbacks(updateRunnable);
     }
 
     @Override
