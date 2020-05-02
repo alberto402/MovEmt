@@ -1,5 +1,7 @@
 package com.sample.MovEmt.activity;
 
+import android.location.Location;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,22 +33,37 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.sample.MovEmt.R;
+import com.sample.MovEmt.emtApi.Authentication;
+import com.sample.MovEmt.emtApi.EndPoint;
+import com.sample.MovEmt.emtApi.ResponseReader;
+import com.sample.MovEmt.fragment.LoadingDialogFragment;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.Executors;
 
 public class SelectRouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mMapView;
     ArrayList<LatLng> listPoints;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     private static final int LOCATION_REQUEST = 500;
-    private EditText Origen;
-    private EditText Destino;
     private String cLatOrig;
     private String cLonOrig;
     private String cLatDest;
     private String cLonDest;
     private Button calculateRoute;
+    private GoogleMap map;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,16 +78,20 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
         mMapView.onCreate(mapViewBundle);
 
         mMapView.getMapAsync(this);
+
+
         listPoints = new ArrayList<>();
-        Origen = (EditText) findViewById(R.id.origen);
-        Destino = (EditText) findViewById(R.id.destino);
+        cLatOrig = "";
+        cLonOrig = "";
+        cLatDest = "";
+        cLonDest = "";
 
         calculateRoute = findViewById(R.id.getRouteButton);
         calculateRoute.setOnClickListener(this::onClickCalculate);
 
         Button btn_back = (Button) findViewById(R.id.Back);
         btn_back.setOnClickListener((v) -> {
-            onClickBackMain(v);
+            onBackPressed();
         });
     }
 
@@ -105,6 +126,7 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
     }
 
     public void  onMapReady(GoogleMap map){
+        this.map = map;
         map.getUiSettings().setZoomControlsEnabled(true);
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST);
@@ -117,7 +139,12 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
                 //Reset marker when already 2
                 if (listPoints.size() == 2){
                     listPoints.clear();
+                    cLatOrig = "";
+                    cLonOrig = "";
+                    cLatDest = "";
+                    cLonDest = "";
                     map.clear();
+                    calculateRoute.setEnabled(false);
                 }
                 //Save first point select
                 listPoints.add(latLng);
@@ -135,12 +162,89 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
                 map.addMarker(markerOptions);
 
                 if (listPoints.size() == 2){
+
                     //Create URL to get request from first marker to second marker
                     cLatOrig = String.valueOf(listPoints.get(0).latitude);
                     cLonOrig = String.valueOf(listPoints.get(0).longitude);
                     cLatDest = String.valueOf(listPoints.get(1).latitude);
                     cLonDest = String.valueOf(listPoints.get(1).longitude);
+                    calculateRoute.setEnabled(true);
+                    LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
+                    loadingDialog.show(getSupportFragmentManager(), "LoadingDialogFragment");
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        Date date = new Date();
+                        String anyoDate = new SimpleDateFormat("yyyy").format(date);
+                        String mesDate = new SimpleDateFormat("MM").format(date);
+                        String diaDate = new SimpleDateFormat("dd").format(date);
+                        String horaDate = new SimpleDateFormat("HH").format(date);
+                        String minDate = new SimpleDateFormat("mm").format(date);
+                        int anyo = Integer.parseInt(anyoDate);
+                        int mes = Integer.parseInt(mesDate);
+                        int dia = Integer.parseInt(diaDate);
+                        int hora = Integer.parseInt(horaDate);
+                        int min = Integer.parseInt(minDate);
 
+                        try {
+                            URL url = new URL(String.format(EndPoint.ROUTE));
+                            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                            con.setRequestMethod("POST");
+                            //headers
+                            con.setRequestProperty("accessToken", Authentication.accessToken);
+                            con.setRequestProperty("Content-Type", "application/json; utf-8");
+                            con.setRequestProperty("Accept", "application/json");
+
+                            // enable write content
+                            con.setDoOutput(true);
+
+                            //Define JSON
+                            String params = "{\"routeType\":\"P\","+
+                                    "\"itinerary\": true,"+
+                                    "\"coordinateXFrom\":"+ cLonOrig  + "," +
+                                    "\"coordinateYFrom\":"+ cLatOrig + "," +
+                                    "\"coordinateXTo\":"+ cLonDest + "," +
+                                    "\"coordinateYTo\":"+ cLatDest  + "," +
+                                    "\"originName\": \"\"," +
+                                    "\"destinationName\": \"\"," +
+                                    "\"polygon\": null," +
+                                    "\"day\":"+ dia + "," +
+                                    "\"month\":"+ mes + "," +
+                                    "\"year\":"+ anyo + "," +
+                                    "\"hour\":"+ hora + "," +
+                                    "\"minute\":"+ min + "," +
+                                    "\"culture\": \"es\"," +
+                                    "\"allowBus\": true," +
+                                    "\"allowBike\": false }";
+
+                            // write them to connection
+                            try(OutputStream os = con.getOutputStream()) {
+                                byte[] input = params.getBytes(StandardCharsets.UTF_8);
+                                os.write(input, 0, input.length);
+                            }
+
+                            int status = con.getResponseCode();
+                            if(status != HttpURLConnection.HTTP_OK){
+                                Log.e("RouteInfoActivity", "Api error while calling route info");
+                                return;
+                            }
+
+                            String response = new ResponseReader().getResponse(con);
+                            JSONArray sections = new JSONObject(response).getJSONObject("data").getJSONArray("sections");
+                            ArrayList<LatLng> routePoints = new ArrayList<>();
+                            for (int i = 0; i < sections.length(); i++) {
+                                JSONArray coordinates = sections.getJSONObject(i).getJSONObject("itinerary").getJSONArray("coordinates");
+                                for (int j = 0; j < coordinates.length(); j++) {
+                                    routePoints.add(new LatLng(coordinates.getJSONArray(j).getDouble(1), coordinates.getJSONArray(j).getDouble(0)));
+                                }
+                            }
+                            con.disconnect();
+                            runOnUiThread(() -> {
+                                map.addPolyline(new PolylineOptions().addAll(routePoints).color(R.color.colorPrimary));
+                                loadingDialog.dismiss();
+                            });
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
             }
         });
@@ -162,25 +266,11 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
         mMapView.onLowMemory();
     }
     public void onClickCalculate(View view){
-        if(!(Origen.getText().toString() == null || Origen.getText().toString().equals(""))){
-            String[] parts = Origen.getText().toString().split(",");
-            cLatOrig = parts[0];
-            cLonOrig = parts[1];
-        }
-        if(!(Destino.getText().toString() == null || Destino.getText().toString().equals(""))){
-            String[] parts = Destino.getText().toString().split(",");
-            cLatDest = parts[0];
-            cLonDest = parts[1];
-        }
-        Intent i = new Intent(this, RouteInfo.class);
+        Intent i = new Intent(this, RouteInfoActivity.class);
         i.putExtra("cLatOrig", cLatOrig);
         i.putExtra("cLonOrig", cLonOrig);
         i.putExtra("cLatDest", cLatDest);
         i.putExtra("cLonDest", cLonDest);
         startActivity(i);
-    }
-    void onClickBackMain(View v){
-        Intent intent = new Intent (v.getContext(), MainActivity.class);
-        startActivityForResult(intent, 0);
     }
 }

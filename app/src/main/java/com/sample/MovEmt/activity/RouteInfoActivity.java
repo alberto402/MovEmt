@@ -16,10 +16,12 @@ import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
+import com.sample.MovEmt.fragment.LoadingDialogFragment;
 import com.sample.MovEmt.routeInfo.RouteItem;
 import com.sample.MovEmt.routeInfo.SectionItem;
 import com.sample.MovEmt.routeInfo.SectionItemAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,11 +61,15 @@ public class RouteInfoActivity extends AppCompatActivity {
 
         rvSections = findViewById(R.id.rvSections);
         rvSections.setHasFixedSize(true);
+
+        LoadingDialogFragment loadingDialog = new LoadingDialogFragment();
+        loadingDialog.show(this.getSupportFragmentManager(), "LoadingDialogFragment");
         //request data on background
         Thread thread = new Thread(() -> {
             getInfo();
             // update view
             runOnUiThread(()->{
+                loadingDialog.dismiss();
                 rvSections.setLayoutManager(new LinearLayoutManager(this));
                 TextView distance = findViewById(R.id.distance);
                 distance.setText(routeI.getDistance() + " km");
@@ -80,9 +86,9 @@ public class RouteInfoActivity extends AppCompatActivity {
             });
         });
         thread.start();
-        Button btn_back = (Button) findViewById(R.id.Back);
+        Button btn_back = findViewById(R.id.Back);
         btn_back.setOnClickListener((v) -> {
-            onClickBack(v);
+            onBackPressed();
         });
     }
 
@@ -203,9 +209,5 @@ public class RouteInfoActivity extends AppCompatActivity {
             aSections.add(new SectionItem(sectionDistance,sectionDuration,sectionOrder,sectionType,sectionIdline,sourceIdStop,sourceName,sourceDescription,destinationName,destinationDescription));
         }
         return aSections;
-    }
-    void onClickBack(View v){
-        Intent intent = new Intent (v.getContext(), SelectRoute.class);
-        startActivityForResult(intent, 0);
     }
 }
