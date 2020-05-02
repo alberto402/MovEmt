@@ -238,7 +238,7 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
                             }
                             con.disconnect();
                             runOnUiThread(() -> {
-                                map.addPolyline(new PolylineOptions().addAll(routePoints).color(R.color.colorPrimary));
+                                map.addPolyline(new PolylineOptions().addAll(routePoints).color(getColor(R.color.colorPrimary)));
                                 loadingDialog.dismiss();
                             });
                         } catch (IOException | JSONException e) {
