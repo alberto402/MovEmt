@@ -1,4 +1,4 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
 import com.sample.MovEmt.emtApi.EndPoint;
 import com.sample.MovEmt.emtApi.ResponseReader;
@@ -48,7 +49,6 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
     private static final int REQUEST_CODE = 101;
 
     private Button btBack;
-    private Button btUpdate;
     private ProgressBar pbLoad;
     private MapView mvMap;
 
@@ -73,10 +73,6 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         updateHandler = new Handler();
 
         btBack = findViewById(R.id.btBack);
-        btUpdate = (Button) findViewById(R.id.btUpdate);
-        btUpdate.setOnClickListener((v) -> {
-            onClickUpdate(v);
-        });
         pbLoad = findViewById(R.id.pbLoad);
         mvMap = findViewById(R.id.mvMap);
         buses = new ArrayList<>();
@@ -104,7 +100,6 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         mvMap.onCreate(mapViewBundle);
         mvMap.getMapAsync(this);
         btBack.setOnClickListener(this::onClickBack);
-        btUpdate.setOnClickListener(this::onClickUpdate);
 
 
         //mvMap.getMapAsync(this);
@@ -252,11 +247,9 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         runOnUiThread(() -> {
             isLoading = !isLoading;
             if (isLoading) {
-                btUpdate.setVisibility(View.GONE);
                 mvMap.setVisibility(View.GONE);
                 pbLoad.setVisibility(View.VISIBLE);
             } else {
-                btUpdate.setVisibility(View.VISIBLE);
                 mvMap.setVisibility(View.VISIBLE);
                 pbLoad.setVisibility(View.GONE);
             }
@@ -265,24 +258,6 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void onClickBack(View view) {
         finish();
-    }
-
-    private void onClickUpdate(View view) {
-        buses.clear();
-        lineas.clear();
-        Thread thread = new Thread(() -> {
-            fetchLastLocation();
-            getStops();
-            getBuses();
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        mvMap.getMapAsync(this);
-        switchLoadingState();
     }
 
     @Override
