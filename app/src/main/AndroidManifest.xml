@@ -47,11 +47,11 @@
         <activity
             android:name=".activity.SpeechViewActivity"
             android:label="@string/title_activity_speech_view"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.StopBusesActivity"
             android:label="StopBusesActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activity.EnterStopActivity"
             android:label="@string/title_activity_camera_to_text"

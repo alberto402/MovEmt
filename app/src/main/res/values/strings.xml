@@ -29,5 +29,4 @@
     <string name="loading_text">Cargando...</string>
     <string name="bus_line">Línea</string>
     <string name="next_bus">Próximo</string>
-    <string name="title_activity_maps">Map</string>
 </resources>

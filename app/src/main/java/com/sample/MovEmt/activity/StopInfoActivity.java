@@ -99,6 +99,7 @@ public class StopInfoActivity extends AppCompatActivity {
         ArrayList<LineItem> lines = parseLinesFromJson(stop.getJSONArray("dataLine"));
         stopI = new StopItem(stop.getString("stop"),stop.getString("name"),lines,stop.getString("postalAddress") );
 
+
     }
     private ArrayList<LineItem> parseLinesFromJson(JSONArray lines) throws JSONException {
         ArrayList<LineItem> aLines = new ArrayList<LineItem>();
