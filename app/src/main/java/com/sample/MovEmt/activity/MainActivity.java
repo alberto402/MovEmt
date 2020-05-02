@@ -100,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void onClickSelectPath(View v){
-        // TODO
+        Intent intent = new Intent (v.getContext(), SelectRouteActivity.class);
+        startActivityForResult(intent, 0);
     }
 
     /*void onClickFindBus(View v){

@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.microsoft.cognitiveservices.speech:client-sdk:1.9.0'
     implementation 'com.microsoft.azure.cognitiveservices:azure-cognitiveservices-computervision:1.0.3-beta'
     annotationProcessor 'com.microsoft.azure:azure-annotations:1.10.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     // https://mvnrepository.com/artifact/com.microsoft.azure/azure
     //implementation group: 'com.microsoft.azure', name: 'azure', version: '1.31.1'
 
