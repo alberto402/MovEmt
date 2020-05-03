@@ -41,6 +41,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -313,24 +314,29 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onResume();
         mvMap.onResume();
 
-        updateHandler.postDelayed(updateRunnable = () -> {
-            buses.clear();
-            lineas.clear();
-            Thread thread = new Thread(() -> {
-                fetchLastLocation();
-                getStops();
-                getBuses();
-            });
-            thread.start();
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            mvMap.getMapAsync(this);
-            switchLoadingState();
-            updateHandler.postDelayed(updateRunnable,1000);
-        }, 1000);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            updateHandler.postDelayed(updateRunnable = () -> {
+                buses.clear();
+                lineas.clear();
+                Thread thread = new Thread(() -> {
+                    fetchLastLocation();
+                    getStops();
+                    getBuses();
+                });
+                thread.start();
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(() -> {
+                    mvMap.getMapAsync(this);
+                    switchLoadingState();
+                });
+                updateHandler.postDelayed(updateRunnable, 1000);
+            }, 1000);
+        });
+
     }
 
     @Override
