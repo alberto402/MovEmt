@@ -56,7 +56,7 @@ import java.util.concurrent.Executors;
 public class SelectRouteActivity extends AppCompatActivity implements OnMapReadyCallback {
     private MapView mMapView;
     ArrayList<LatLng> listPoints;
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+    private static final String MAPVIEW_BUNDLE_KEY = "AIzaSyCkBe0q8de_cNuJHTfxEVbxqWbYOSnTYmU";
     private static final int LOCATION_REQUEST = 500;
     private String cLatOrig;
     private String cLonOrig;
