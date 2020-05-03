@@ -227,20 +227,30 @@ public class SelectRouteActivity extends AppCompatActivity implements OnMapReady
                                 return;
                             }
 
-                            String response = new ResponseReader().getResponse(con);
-                            JSONArray sections = new JSONObject(response).getJSONObject("data").getJSONArray("sections");
-                            ArrayList<LatLng> routePoints = new ArrayList<>();
-                            for (int i = 0; i < sections.length(); i++) {
-                                JSONArray coordinates = sections.getJSONObject(i).getJSONObject("itinerary").getJSONArray("coordinates");
-                                for (int j = 0; j < coordinates.length(); j++) {
-                                    routePoints.add(new LatLng(coordinates.getJSONArray(j).getDouble(1), coordinates.getJSONArray(j).getDouble(0)));
+                            JSONObject response = new JSONObject(new ResponseReader().getResponse(con));
+                            if ("00".equals(response.getString("code"))) {
+                                JSONArray sections = response.getJSONObject("data").getJSONArray("sections");
+                                ArrayList<LatLng> routePoints = new ArrayList<>();
+                                for (int i = 0; i < sections.length(); i++) {
+                                    JSONArray coordinates = sections.getJSONObject(i).getJSONObject("itinerary").getJSONArray("coordinates");
+                                    for (int j = 0; j < coordinates.length(); j++) {
+                                        routePoints.add(new LatLng(coordinates.getJSONArray(j).getDouble(1), coordinates.getJSONArray(j).getDouble(0)));
+                                    }
                                 }
+                                con.disconnect();
+                                runOnUiThread(() -> {
+                                    map.addPolyline(new PolylineOptions().addAll(routePoints).color(getColor(R.color.colorPrimary)));
+                                    loadingDialog.dismiss();
+                                });
                             }
-                            con.disconnect();
-                            runOnUiThread(() -> {
-                                map.addPolyline(new PolylineOptions().addAll(routePoints).color(getColor(R.color.colorPrimary)));
-                                loadingDialog.dismiss();
-                            });
+                            else {
+                                runOnUiThread(() -> {
+                                    calculateRoute.setEnabled(false);
+                                    loadingDialog.dismiss();
+                                    Toast noRoutes = Toast.makeText(SelectRouteActivity.this, R.string.recognize_route_error, Toast.LENGTH_SHORT);
+                                    noRoutes.show();
+                                });
+                            }
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
                         }

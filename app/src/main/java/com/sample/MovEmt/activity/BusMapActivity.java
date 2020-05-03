@@ -153,17 +153,23 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void parseBusesFromJson(String response) throws JSONException {
         JSONObject res = new JSONObject(response);
-        JSONArray data = res.getJSONArray("data");
-        JSONObject arr = data.getJSONObject(0);
-        JSONArray arrives = arr.getJSONArray("Arrive");
-        for (int i = 0; i < arrives.length(); i++) {
-            JSONObject bus = arrives.getJSONObject(i);
-            String line = bus.getString("line");
-            JSONObject geometry = bus.getJSONObject("geometry");
-            JSONArray coordinates = geometry.getJSONArray("coordinates");
-            LatLng coords = new LatLng(coordinates.getDouble(1), coordinates.getDouble(0));
-            buses.add(coords);
-            lineas.add(line);
+        if ("00".equals(res.getString("code"))) {
+            JSONArray data = res.getJSONArray("data");
+            JSONObject arr = data.getJSONObject(0);
+            JSONArray arrives = arr.getJSONArray("Arrive");
+            for (int i = 0; i < arrives.length(); i++) {
+                JSONObject bus = arrives.getJSONObject(i);
+                String line = bus.getString("line");
+                JSONObject geometry = bus.getJSONObject("geometry");
+                JSONArray coordinates = geometry.getJSONArray("coordinates");
+                LatLng coords = new LatLng(coordinates.getDouble(1), coordinates.getDouble(0));
+                buses.add(coords);
+                lineas.add(line);
+            }
+        }
+        else {
+            buses.clear();
+            lineas.clear();
         }
 
     }
@@ -206,13 +212,21 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private void parseInfoFromJson(String response) throws JSONException {
         JSONObject res = new JSONObject(response);
-        JSONArray data = res.getJSONArray("data");
-        JSONObject stop = data.getJSONObject(0);
-        JSONObject geometry = stop.getJSONObject("geometry");
-        JSONArray coordinates = geometry.getJSONArray("coordinates");
-        stopLat = Double.parseDouble(coordinates.getString(1));
-        stopLon = Double.parseDouble(coordinates.getString(0));
-        stopId = String.valueOf(stop.getInt("stopId"));
+        if ("00".equals(res.getString("code"))) {
+            JSONArray data = res.getJSONArray("data");
+            JSONObject stop = data.getJSONObject(0);
+            JSONObject geometry = stop.getJSONObject("geometry");
+            JSONArray coordinates = geometry.getJSONArray("coordinates");
+            stopLat = Double.parseDouble(coordinates.getString(1));
+            stopLon = Double.parseDouble(coordinates.getString(0));
+            stopId = String.valueOf(stop.getInt("stopId"));
+
+        }
+        else {
+            stopId = "0";
+            stopLat = 0;
+            stopLon = 0;
+        }
     }
 
     private void fetchLastLocation() {
@@ -270,10 +284,13 @@ public class BusMapActivity extends AppCompatActivity implements OnMapReadyCallb
         googleMap.clear();
         googleMap.setMyLocationEnabled(true);
 
-        LatLng nearStop = new LatLng(stopLat,stopLon);
-        MarkerOptions nStop = new MarkerOptions().position(nearStop).title("Parada: " + stopId);
-        nStop.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        googleMap.addMarker(nStop);
+        if (stopLon != 0 || stopLat != 0) {
+            LatLng nearStop = new LatLng(stopLat,stopLon);
+            MarkerOptions nStop = new MarkerOptions().position(nearStop).title("Parada: " + stopId);
+            nStop.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            googleMap.addMarker(nStop);
+        }
+
         for (int i=0; i < buses.size(); i++){
             MarkerOptions autobus = new MarkerOptions().position(buses.get(i)).title("Línea: " + lineas.get(i));
             autobus.icon(bitmapDescriptorFromVector(this,R.drawable.ic_bus_foreground));
