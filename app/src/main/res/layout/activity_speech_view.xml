@@ -85,7 +85,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="Pulsa el mic´rofono y comenta lo que deseas saber"
+                android:text="Pulsa el micrófono y comenta lo que deseas saber"
                 android:textAlignment="center" />
 
             <TextView
@@ -101,16 +101,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="70dp"
-                android:text="- Calcular una ruta"
+                android:text="- Tiempo de espera"
                 android:textAlignment="textStart" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginStart="70dp"
-                android:text="-Parada más cercana"
-                android:textAlignment="textStart" />
 
             <TextView
                 android:id="@+id/textView5"

@@ -145,6 +145,13 @@ public class SpeechViewActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    else if(result.get(0).contains("cercanos")||result.get(0).contains("cerca")){
+                        String aux[]=result.get(0).split(" ");
+                        intent = new Intent(this, BusMapActivity.class);
+                        startActivityForResult(intent, 0);
+
+
+                    }
                     else{
                         AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
                         dialogo1.setTitle("Error en busqueda");
