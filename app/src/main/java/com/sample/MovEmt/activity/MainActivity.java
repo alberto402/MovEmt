@@ -24,7 +24,7 @@ import com.sample.MovEmt.R;
 public class MainActivity extends AppCompatActivity {
     private CardView cvStop;
     private CardView cvPath;
-    //private CardView cvBus;
+    private CardView cvBus;
     private CardView cvVoice;
     private CardView cvinfPa;
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         cvStop = findViewById(R.id.cvStop);
         cvPath = findViewById(R.id.cvPath);
-        //cvBus = findViewById(R.id.cvBus);
+        cvBus = findViewById(R.id.cvBus);
         cvVoice = findViewById(R.id.cvVoice);
         cvinfPa = findViewById(R.id.cvinfPa);
 
@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.path);
         ((ImageView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_room_black_24dp);
 
-        //((TextView)cvBus.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.busses);
-        //((ImageView)cvBus.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_directions_bus_black_24dp);
+        ((TextView)cvBus.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.buses);
+        ((ImageView)cvBus.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_directions_bus_black_24dp);
 
         ((TextView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.voice);
         ((ImageView)cvVoice.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_settings_voice_black_24dp);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         cvStop.setOnClickListener(this::onClickEnterStop);
         cvPath.setOnClickListener(this::onClickSelectPath);
         cvVoice.setOnClickListener(this::onClickVoiceCommand);
-        //cvBus.setOnClickListener(this::onClickFindBus);
+        cvBus.setOnClickListener(this::onClickFindBus);
         cvinfPa.setOnClickListener(this::onClickInfoStop);
 
         Thread thread = new Thread(this::setAuthentication);
@@ -104,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
-    /*void onClickFindBus(View v){
-    }*/
+    void onClickFindBus(View v){
+        Intent intent = new Intent(this, BusMapActivity.class);
+        startActivity(intent);
+    }
 
     void onClickVoiceCommand(View v){
         Intent intent = new Intent (v.getContext(), SpeechViewActivity.class);
