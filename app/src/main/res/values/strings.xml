@@ -1,8 +1,8 @@
 <resources>
-    <string name="google_maps_api_key">AIzaSyAbdVmlVz9PKLS9_VJ47urlJWCVDVVyy-E</string>
+    <string name="google_maps_api_key">AIzaSyCkBe0q8de_cNuJHTfxEVbxqWbYOSnTYmU</string>
     <string name="app_name">MovEmt</string>
     <string name="appName">MOVEMT</string>
-    <string name="stop">Introduce parada</string>
+    <string name="stop">Tiempos de espera</string>
     <string name="path">Selecciona ruta</string>
     <string name="buses">Localiza autobuses</string>
     <string name="voice">Comando por voz</string>
