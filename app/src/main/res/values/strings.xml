@@ -18,7 +18,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="c_digo_de_parada">Código de parada</string>
-    <string name="introducir_parada">Introducir Parada</string>
+    <string name="introducir_parada">Introduce una parada</string>
     <string name="buscar_parada">Buscar Parada</string>
     <string name="image">IMAGE</string>
     <string name="introduce_el_c_digo_de_parada_o_toma_una_foto_con_la_c_mara_para_obtener_informaci_n">Introduce el código de parada o toma una foto con la cámara para obtener información</string>
