@@ -28,26 +28,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <activity android:name=".activity.StopInfoActivity"/>
+        <activity android:name=".activity.StopInfoActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.RouteInfoActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".activity.BusMapActivity"></activity>
+        <activity android:name=".activity.BusMapActivity"
+                  android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".activity.SelectRouteActivity"
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.SpeechViewActivity"
             android:label="@string/title_activity_speech_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.StopBusesActivity"
             android:label="StopBusesActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.EnterStopActivity"
             android:label="@string/title_activity_camera_to_text"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.MainActivity" >
+        <activity android:name=".activity.MainActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
