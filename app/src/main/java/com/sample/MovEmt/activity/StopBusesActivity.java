@@ -3,6 +3,8 @@ package com.sample.MovEmt.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StopBusesActivity extends AppCompatActivity {
+    private Button back;
     private RecyclerView rvBus;
     private ArrayList<BusItem> alBus;
     private int stopNumber;
@@ -45,6 +48,9 @@ public class StopBusesActivity extends AppCompatActivity {
         rvBus = findViewById(R.id.rvBus);
         rvBus.setHasFixedSize(true);
 
+        back = findViewById(R.id.Back);
+        back.setOnClickListener(this::onClickBack);
+
         //request data on background
         Thread thread = new Thread(() -> {
             getBuses();
@@ -55,6 +61,10 @@ public class StopBusesActivity extends AppCompatActivity {
             });
         });
         thread.start();
+    }
+
+    private void onClickBack(View view) {
+        finish();
     }
 
     private void getBuses(){
