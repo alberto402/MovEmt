@@ -44,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="9"
-                android:text="@string/introducir_parada"
+                android:text="@string/bus_stop_title"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp" />

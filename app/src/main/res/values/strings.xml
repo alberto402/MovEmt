@@ -33,4 +33,6 @@
     <string name="route_title">Información de la ruta</string>
     <string name="route_selection_title">Selecciona una ruta</string>
     <string name="speech_title">Comandos por voz</string>
+    <string name="bus_stop_title">Próximos autobuses</string>
+    <string name="stop_info">Información de parada</string>
 </resources>
