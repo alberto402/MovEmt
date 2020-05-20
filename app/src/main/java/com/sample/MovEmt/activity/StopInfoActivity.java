@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.sample.MovEmt.R;
@@ -34,6 +36,7 @@ public class StopInfoActivity extends AppCompatActivity {
     private StopItem stopI;
     private int stopNumber;
     private RecyclerView rvLines;
+    private Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class StopInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stop_info);
         rvLines = findViewById(R.id.rvLines);
         rvLines.setHasFixedSize(true);
+
+        back = findViewById(R.id.Back);
+        back.setOnClickListener(this::onClickBack);
+
         //request data on background
         Thread thread = new Thread(() -> {
             getInfo();
@@ -60,9 +67,12 @@ public class StopInfoActivity extends AppCompatActivity {
             });
         });
         thread.start();
-
-
     }
+
+    private void onClickBack(View view) {
+        finish();
+    }
+
     private void getInfo(){
         try {
             URL url = new URL(String.format(EndPoint.INFO_STOP, stopNumber));

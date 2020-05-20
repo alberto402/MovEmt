@@ -1,5 +1,5 @@
 <resources>
-    <string name="google_maps_api_key">AIzaSyCkBe0q8de_cNuJHTfxEVbxqWbYOSnTYmU</string>
+    <string name="google_maps_api_key"></string>
     <string name="app_name">MovEmt</string>
     <string name="appName">MOVEMT</string>
     <string name="stop">Tiempos de espera</string>

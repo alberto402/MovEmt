@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAuthentication(){
         // set EMT email and password
-        Authentication.email = "acfucm2019@gmail.com";
-        Authentication.password = "Acf2019ADR";
+        Authentication.email = "";
+        Authentication.password = "";
         try {
             URL url = new URL(EndPoint.LOGIN);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
