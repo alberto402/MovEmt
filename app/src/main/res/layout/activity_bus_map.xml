@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.BusMapActivity"
-    android:padding="20dp">
+    android:padding="10dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -54,16 +54,17 @@
             android:id="@+id/mvMap"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="30dp"
+            android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView"
             app:mapType="normal"
-            app:uiRotateGestures="false"
-            app:uiScrollGestures="false"
-            app:uiTiltGestures="false"
+            app:uiRotateGestures="true"
+            app:uiScrollGestures="true"
+            app:uiTiltGestures="true"
             app:uiZoomControls="true"
-            app:uiZoomGestures="false" app:layout_constraintBottom_toBottomOf="parent"/>
+            app:uiZoomGestures="true"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ProgressBar
         android:id="@+id/pbLoad"

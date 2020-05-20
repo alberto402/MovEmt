@@ -72,7 +72,13 @@
                     android:id="@+id/map"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="20dp"/>
+                    android:layout_margin="20dp"
+                    app:mapType="normal"
+                    app:uiRotateGestures="true"
+                    app:uiScrollGestures="true"
+                    app:uiTiltGestures="true"
+                    app:uiZoomControls="true"
+                    app:uiZoomGestures="true" />
             </RelativeLayout>
 
             <Button
