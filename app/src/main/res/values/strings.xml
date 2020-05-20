@@ -31,4 +31,5 @@
     <string name="bus_line">Línea</string>
     <string name="next_bus">Próximo</string>
     <string name="route_title">Información de la ruta</string>
+    <string name="route_selection_title">Selecciona una ruta</string>
 </resources>
