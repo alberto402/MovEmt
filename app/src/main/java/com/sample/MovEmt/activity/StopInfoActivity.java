@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
@@ -31,13 +33,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class StopInfoActivity extends AppCompatActivity {
     private StopItem stopI;
     private int stopNumber;
     private RecyclerView rvLines;
     private Button back;
-
+    private String info;
+    private TextToSpeech textToSpeech;
+    private Button buttonSpeech;
+    private Boolean pulsado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +52,12 @@ public class StopInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stop_info);
         rvLines = findViewById(R.id.rvLines);
         rvLines.setHasFixedSize(true);
-
         back = findViewById(R.id.Back);
         back.setOnClickListener(this::onClickBack);
-
+        pulsado=false;
+        info = "";
+        buttonSpeech = findViewById(R.id.buttonS);
+        buttonSpeech.setOnClickListener(this::onClickSound);
         //request data on background
         Thread thread = new Thread(() -> {
             getInfo();
@@ -66,11 +74,43 @@ public class StopInfoActivity extends AppCompatActivity {
                 rvLines.setAdapter(new LineItemAdapter(stopI.getLines()));
             });
         });
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("es-ES"));
+
+                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "The Language is not supported!");
+                    } else {
+                        Log.i("TTS", "Language Supported.");
+                    }
+                    Log.i("TTS", "Initialization success.");
+                } else {
+                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         thread.start();
     }
 
     private void onClickBack(View view) {
         finish();
+    }
+
+    void onClickSound(View v){
+
+        if(!pulsado) {
+            pulsado=true;
+            buttonSpeech.setBackgroundResource(R.drawable.ic_altavoz_cancel_foreground);
+            textToSpeech.speak(info, TextToSpeech.QUEUE_FLUSH, null);
+        }
+        else{
+            buttonSpeech.setBackgroundResource(R.drawable.ic_altavoz_foreground);
+            pulsado=false;
+            textToSpeech.stop();
+        }
     }
 
     private void getInfo(){
@@ -106,6 +146,7 @@ public class StopInfoActivity extends AppCompatActivity {
         JSONObject inf = data.getJSONObject(0);
         JSONArray stops = inf.getJSONArray("stops");
         JSONObject stop = stops.getJSONObject(0);
+        info="Parada "+stop.getString("name")+", correspondiente con ";
         ArrayList<LineItem> lines = parseLinesFromJson(stop.getJSONArray("dataLine"));
         stopI = new StopItem(stop.getString("stop"),stop.getString("name"),lines,stop.getString("postalAddress") );
 
@@ -115,6 +156,7 @@ public class StopInfoActivity extends AppCompatActivity {
         ArrayList<LineItem> aLines = new ArrayList<LineItem>();
         for(int i = 0; i < lines.length(); i++){
            JSONObject line = lines.getJSONObject(i);
+            info+="Línea "+line.getString("label")+".";
            if(line.getString("direction").equalsIgnoreCase("A"))
            {
                aLines.add(new LineItem(line.getString("headerB"),line.getString("headerA"),line.getString("label"),

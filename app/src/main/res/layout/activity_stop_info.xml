@@ -48,6 +48,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="30sp" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -147,17 +148,25 @@
 
                 </ScrollView>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonS"
+                android:layout_width="36dp"
+                android:layout_height="29dp"
+                android:background="@drawable/ic_altavoz_foreground" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvLines"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="340dp"
+        android:layout_height="428dp"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.655"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView3"
+        app:layout_constraintVertical_bias="0.958" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
