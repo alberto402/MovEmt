@@ -45,12 +45,13 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="9"
                     android:text="@string/route_selection_title"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="30sp" />
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
