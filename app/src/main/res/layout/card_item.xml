@@ -28,9 +28,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:textSize="22sp"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center_vertical"/>
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimary"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivOption"

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.BusMapActivity"
-    android:padding="10dp">
+    android:padding="10dp"
+    tools:context=".activity.BusMapActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -16,7 +15,9 @@
         app:cardBackgroundColor="@color/colorCardBackground"
         app:cardCornerRadius="10dp"
         app:cardElevation="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/mvMap"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -41,42 +42,45 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="9"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
                 android:text="@string/buses"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="30sp" />
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <com.google.android.gms.maps.MapView
-            android:id="@+id/mvMap"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:mapType="normal"
-            app:uiRotateGestures="true"
-            app:uiScrollGestures="true"
-            app:uiTiltGestures="true"
-            app:uiZoomControls="true"
-            app:uiZoomGestures="true"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        android:id="@+id/mvMap"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/pbLoad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:mapType="normal"
+        app:uiRotateGestures="true"
+        app:uiScrollGestures="true"
+        app:uiTiltGestures="true"
+        app:uiZoomControls="true"
+        app:uiZoomGestures="true" />
 
     <ProgressBar
         android:id="@+id/pbLoad"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:indeterminateTint="@color/colorPrimary"
         android:padding="130dp"
+        android:progressTint="@color/colorPrimary"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView"
-        android:progressTint="@color/colorPrimary"
-        android:indeterminateTint="@color/colorPrimary"/>
+        app:layout_constraintTop_toBottomOf="@+id/mvMap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
