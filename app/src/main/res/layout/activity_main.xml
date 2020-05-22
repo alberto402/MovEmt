@@ -23,9 +23,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:text="@string/appName"
-            android:textSize="60sp"
+            android:autoSizeTextType="uniform"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"/>
 
