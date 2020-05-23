@@ -23,6 +23,7 @@ import com.sample.MovEmt.R;
 
 public class MainActivity extends AppCompatActivity {
     private CardView cvStop;
+    private CardView cvBusLine;
     private CardView cvPath;
     private CardView cvBus;
     private CardView cvVoice;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         cvStop = findViewById(R.id.cvStop);
+        cvBusLine = findViewById(R.id.cvBusLine);
         cvPath = findViewById(R.id.cvPath);
         cvBus = findViewById(R.id.cvBus);
         cvVoice = findViewById(R.id.cvVoice);
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
         // set text and icons
         ((TextView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.stop);
         ((ImageView)cvStop.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_count);
+
+        ((TextView)cvBusLine.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.capture_bus_line);
+        ((ImageView)cvBusLine.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_directions_bus_black_24dp);
 
         ((TextView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.tvOption)).setText(R.string.path);
         ((ImageView)cvPath.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_room_black_24dp);
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         ((ImageView)cvinfPa.findViewById(R.id.llItemOption).findViewById(R.id.ivOption)).setImageResource(R.drawable.ic_launcher_info);
 
         cvStop.setOnClickListener(this::onClickEnterStop);
+        cvBusLine.setOnClickListener(this::onClickEnterBusLine);
         cvPath.setOnClickListener(this::onClickSelectPath);
         cvVoice.setOnClickListener(this::onClickVoiceCommand);
         cvBus.setOnClickListener(this::onClickFindBus);
@@ -96,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
     void onClickEnterStop(View v){
         Intent intent = new Intent (v.getContext(), EnterStopActivity.class);
         intent.putExtra("info", false);
+        startActivityForResult(intent, 0);
+    }
+
+    void onClickEnterBusLine(View v){
+        Intent intent = new Intent (v.getContext(), EnterBusLineActivity.class);
         startActivityForResult(intent, 0);
     }
 

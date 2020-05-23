@@ -5,21 +5,22 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.MediaStore;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.net.Uri;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
-import com.microsoft.azure.cognitiveservices.vision.computervision.*;
+import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient;
+import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionManager;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.*;
 import com.sample.MovEmt.R;
 import com.sample.MovEmt.emtApi.Authentication;
@@ -28,39 +29,39 @@ import com.sample.MovEmt.emtApi.ResponseReader;
 import com.sample.MovEmt.fragment.LoadingDialogFragment;
 import org.json.JSONObject;
 
-
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
-
-public class EnterStopActivity extends AppCompatActivity {
+public class EnterBusLineActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1;
     private String currentPhotoPath = "";
-    private Button stopSearch;
-    private EditText stopCode;
-    private boolean info = false;
+    private Button audioButton;
+    private TextView lineCode;
+    private boolean pulsado = false;
+    private TextToSpeech textToSpeech;
 
 
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "MovEMT_stop_" + timeStamp;
+        String imageFileName = "MovEMT_line_" + timeStamp;
         File storageDir = new File(getFilesDir(), "images");
         if (!storageDir.exists()) {
             storageDir.mkdirs();
         }
         File image = File.createTempFile(
-            imageFileName,  /* prefix */
-            ".jpeg",         /* suffix */
-            storageDir      /* directory */
+                imageFileName,  /* prefix */
+                ".jpeg",         /* suffix */
+                storageDir      /* directory */
         );
-    
+
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
@@ -104,34 +105,29 @@ public class EnterStopActivity extends AppCompatActivity {
                         // Get one line in the text block
                         for (OcrLine line : reg.lines()) {
                             for (OcrWord word : line.words()) {
-                                // get bounding box of first word recognized (just to demo)
-                                if ((word.text().length() >= 3 && word.text().length() <= 4)) {
-                                    try {
-                                        Integer.parseInt(word.text());
-                                        URL url = new URL(String.format(EndPoint.INFO_STOP, word.text()));
-                                        HttpURLConnection con = null;
+                                SimpleDateFormat format1 = new SimpleDateFormat("yyyyMMdd");
+                                URL url = new URL(String.format(EndPoint.GET_LINE, word.text(), format1.format(Calendar.getInstance().getTime())));
+                                HttpURLConnection con = null;
 
-                                        con = (HttpURLConnection) url.openConnection();
-                                        con.setRequestMethod("GET");
+                                con = (HttpURLConnection) url.openConnection();
+                                con.setRequestMethod("GET");
 
-                                        //headers
-                                        con.setRequestProperty("accessToken", Authentication.accessToken);
-                                        con.setRequestProperty("Content-Type", "application/json; utf-8");
-                                        con.setRequestProperty("Accept", "application/json");
+                                //headers
+                                con.setRequestProperty("accessToken", Authentication.accessToken);
+                                con.setRequestProperty("Content-Type", "application/json; utf-8");
+                                con.setRequestProperty("Accept", "application/json");
 
-                                        int status = con.getResponseCode();
 
-                                        if (status == HttpURLConnection.HTTP_OK){
-                                            String response = new ResponseReader().getResponse(con);
-                                            JSONObject res = new JSONObject(response);
-                                            if ("00".equals(res.getString("code"))) {
-                                                runOnUiThread(() -> {
-                                                    stopCode.setText(word.text());
-                                                });
-                                                numberFound = true;
-                                            }
-                                        }
-                                    } catch (NumberFormatException e) {
+                                int status = con.getResponseCode();
+
+                                if (status == HttpURLConnection.HTTP_OK){
+                                    String response = new ResponseReader().getResponse(con);
+                                    JSONObject res = new JSONObject(response);
+                                    if ("00".equals(res.getString("code"))) {
+                                        runOnUiThread(() -> {
+                                            lineCode.setText(word.text());
+                                        });
+                                        numberFound = true;
                                     }
                                 }
                             }
@@ -140,9 +136,8 @@ public class EnterStopActivity extends AppCompatActivity {
                     dialog.dismiss();
                     if (!numberFound) {
                         runOnUiThread(() -> {
-                            Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
-                            EditText stopCode = findViewById(R.id.stopCodeText);
-                            stopCode.setText("");
+                            Toast.makeText(getApplicationContext(), getString(R.string.recognize_bus_line_error), Toast.LENGTH_SHORT).show();
+                            lineCode.setText("");
                         });
                     }
                 }
@@ -152,9 +147,8 @@ public class EnterStopActivity extends AppCompatActivity {
                 ex.printStackTrace();
                 dialog.dismiss();
                 runOnUiThread(() -> {
-                    Toast.makeText(getApplicationContext(), getString(R.string.recognize_stop_error), Toast.LENGTH_SHORT).show();
-                    EditText stopCode = findViewById(R.id.stopCodeText);
-                    stopCode.setText("");
+                    Toast.makeText(getApplicationContext(), getString(R.string.recognize_bus_line_error), Toast.LENGTH_SHORT).show();
+                    lineCode.setText("");
                 });
             }
         });
@@ -162,9 +156,7 @@ public class EnterStopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        info = extras.getBoolean("info",false);
-        setContentView(R.layout.activity_enter_stop_view);
+        setContentView(R.layout.activity_enter_bus_line_view);
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1000);
         }
@@ -179,35 +171,38 @@ public class EnterStopActivity extends AppCompatActivity {
             onClickBackMain(v);
         });
 
-        stopCode = findViewById(R.id.stopCodeText);
-        stopSearch = findViewById(R.id.searchStopButton);
-        stopSearch.setOnClickListener(this::onClickSearch);
+        lineCode = findViewById(R.id.lineCodeText);
+        audioButton = findViewById(R.id.audioButton);
+        audioButton.setOnClickListener(this::onAudio);
+        textToSpeech = new TextToSpeech(getApplicationContext(), status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                int ttsLang = textToSpeech.setLanguage(Locale.forLanguageTag("es-ES"));
+
+                if (ttsLang == TextToSpeech.LANG_MISSING_DATA
+                        || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Log.e("TTS", "The Language is not supported!");
+                } else {
+                    Log.i("TTS", "Language Supported.");
+                }
+                Log.i("TTS", "Initialization success.");
+            } else {
+                Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
-    private void onClickSearch(View v){
-        runOnUiThread(() -> {
-            String text = stopCode.getText().toString();
-            if(text.equals(""))
-                return;
-
-            try {
-                int stopCode = Integer.parseInt(text);
-                Intent intent;
-                if(info)
-                {
-                     intent = new Intent(v.getContext(), StopInfoActivity.class);
-                }
-                else {
-                     intent = new Intent(v.getContext(), StopBusesActivity.class);
-                }
-                intent.putExtra("stopNumber", stopCode);
-                startActivityForResult(intent, 0);
-
-            } catch (Exception e){
-                Log.e("parada_texto_imagen", text + " is NAN.");
-            }
-        });
+    private void onAudio(View v){
+        if(!pulsado && !lineCode.getText().toString().isEmpty()) {
+            pulsado=true;
+            audioButton.setBackgroundResource(R.drawable.ic_altavoz_cancel_foreground);
+            textToSpeech.speak("Línea " + lineCode.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
+        }
+        else{
+            audioButton.setBackgroundResource(R.drawable.ic_altavoz_foreground);
+            pulsado=false;
+            textToSpeech.stop();
+        }
     }
 
 
@@ -232,8 +227,8 @@ public class EnterStopActivity extends AppCompatActivity {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                                                    "com.sample.MovEmt.fileprovider",
-                                                    photoFile);
+                        "com.sample.MovEmt.fileprovider",
+                        photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_CODE);
             }

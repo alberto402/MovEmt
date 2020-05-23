@@ -49,6 +49,10 @@
             android:name=".activity.EnterStopActivity"
             android:label="@string/title_activity_camera_to_text"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.EnterBusLineActivity"
+            android:label="EnterBusLineActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.MainActivity"
                   android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
