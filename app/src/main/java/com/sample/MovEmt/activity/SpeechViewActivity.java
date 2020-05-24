@@ -155,7 +155,7 @@ public class SpeechViewActivity extends AppCompatActivity {
                     else{
                         AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
                         dialogo1.setTitle("Error en busqueda");
-                        dialogo1.setMessage("No entiendo lo que quieres decir. Incluye palabras como: tiempo , información y no olvide el número de parada");
+                        dialogo1.setMessage("No entiendo lo que quieres decir. Incluye palabras como: tiempo , información, autobuses cercanos y no olvide el número de parada en el caso de que fuese necesario");
                         dialogo1.setCancelable(false);
                         dialogo1.setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
