@@ -181,7 +181,7 @@ public class EnterStopActivity extends AppCompatActivity {
                         });
                     }
                 }
-                // photo.delete();
+                photo.delete();
             }
             catch (Exception ex) {
                 ex.printStackTrace();
