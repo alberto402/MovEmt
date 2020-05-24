@@ -12,5 +12,9 @@
 /captures
 .externalNativeBuild
 .cxx
-.idea
+.idea/
 _windows
+.project
+.classpath
+.settings/
+.vscode/

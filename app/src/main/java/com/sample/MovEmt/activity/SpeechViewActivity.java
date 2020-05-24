@@ -1,13 +1,12 @@
-package com.sample.MovEmt;
+package com.sample.MovEmt.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -20,7 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.IOException;
+import com.sample.MovEmt.R;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -111,12 +111,62 @@ public class SpeechViewActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     textOutput.setText(result.get(0));
-                    int speechStatus = textToSpeech.speak(result.get(0), TextToSpeech.QUEUE_FLUSH, null);
+                    //int speechStatus = textToSpeech.speak(result.get(0), TextToSpeech.QUEUE_FLUSH, null);
 
-                    if (speechStatus == TextToSpeech.ERROR) {
-                        Log.e("TTS", "Error in converting Text to Speech!");
+                  //  if (speechStatus == TextToSpeech.ERROR) {
+                    //    Log.e("TTS", "Error in converting Text to Speech!");
+                    //}
+                    Intent intent;
+                    if(result.get(0).contains("tiempo") ){
+                        String aux[]=result.get(0).split(" ");
+                        for(String a : aux){
+                            try{
+                                int num = Integer.parseInt(a);
+                                intent = new Intent(this, StopBusesActivity.class);
+                                intent.putExtra("stopNumber",num );
+                                startActivityForResult(intent, 0);
+                            }
+                            catch (Exception e){
+
+                            }
+                        }
                     }
+                    else if(result.get(0).contains("información")){
+                        String aux[]=result.get(0).split(" ");
+                        for(String a : aux){
+                            try{
+                                int num = Integer.parseInt(a);
+                                intent = new Intent(this, StopInfoActivity.class);
+                                intent.putExtra("stopNumber",num );
+                                startActivityForResult(intent, 0);
+                            }
+                            catch (Exception e){
+
+                            }
+                        }
+                    }
+                    else if(result.get(0).contains("cercanos")||result.get(0).contains("cerca")){
+                        String aux[]=result.get(0).split(" ");
+                        intent = new Intent(this, BusMapActivity.class);
+                        startActivityForResult(intent, 0);
+
+
+                    }
+                    else{
+                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                        dialogo1.setTitle("Error en busqueda");
+                        dialogo1.setMessage("No entiendo lo que quieres decir. Incluye palabras como: tiempo , información, autobuses cercanos y no olvide el número de parada en el caso de que fuese necesario");
+                        dialogo1.setCancelable(false);
+                        dialogo1.setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                finish();
+                            }
+                        });
+                        dialogo1.show();
+                    }
+
                 }
+            }
                 break;
             }
 
@@ -125,4 +175,4 @@ public class SpeechViewActivity extends AppCompatActivity {
 
 
 
-}
+
