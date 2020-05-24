@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,6 +68,33 @@ public class EnterStopActivity extends AppCompatActivity {
         return image;
     }
 
+    private int getImageOrientation(String imagePath){
+        int rotate = 0;
+        try {
+
+            ExifInterface exif = new ExifInterface(
+                    imagePath);
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rotate;
+    }
+
     /**
      * RECOGNIZE PRINTED TEXT: Displays text found in image with angle and orientation of
      * the block of text.
@@ -79,6 +108,10 @@ public class EnterStopActivity extends AppCompatActivity {
 
             try {
                 Bitmap bmp = BitmapFactory.decodeFile(photo.getAbsolutePath());
+                Matrix matrix = new Matrix();
+                matrix.postRotate(getImageOrientation(photo.getAbsolutePath()));
+                bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(),
+                        bmp.getHeight(), matrix, true);
                 FileOutputStream out = new FileOutputStream(photo);
                 if (bmp.getHeight() > 1024 || bmp.getWidth() > 1024)
                     bmp = Bitmap.createScaledBitmap(bmp, 1024, 1024, true);
@@ -148,7 +181,7 @@ public class EnterStopActivity extends AppCompatActivity {
                         });
                     }
                 }
-                photo.delete();
+                // photo.delete();
             }
             catch (Exception ex) {
                 ex.printStackTrace();
