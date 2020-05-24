@@ -80,7 +80,8 @@ public class EnterStopActivity extends AppCompatActivity {
             try {
                 Bitmap bmp = BitmapFactory.decodeFile(photo.getAbsolutePath());
                 FileOutputStream out = new FileOutputStream(photo);
-                bmp = Bitmap.createScaledBitmap(bmp, 1024, 1024, true);
+                if (bmp.getHeight() > 1024 || bmp.getWidth() > 1024)
+                    bmp = Bitmap.createScaledBitmap(bmp, 1024, 1024, true);
                 bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 out.flush();
                 out.close();
